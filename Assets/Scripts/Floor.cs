@@ -17,8 +17,11 @@ public class Floor : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		Debug.Log ("OnTriggerEnter2D!");
-
-		
+		// stop whatever hit the floor
+		;
 	}
 
+	void OnTriggerExit2D (Collider2D other){
+
+	}
 }
