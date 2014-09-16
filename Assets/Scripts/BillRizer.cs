@@ -18,9 +18,13 @@ public class BillRizer : MonoBehaviour {
 
 	public bool 		onFloor = false;
 	public bool 		crouched = false;
-	
+	public bool 		fallingThrough = false;
+	//private Animator	anim;
+
+	public GameObject 	spawner;
+
 	void Start () {
-	
+		//anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -49,6 +53,7 @@ public class BillRizer : MonoBehaviour {
 				if (crouched) {
 					Debug.Log("Fall through");
 					onFloor = false;
+					fallingThrough = true;
 				}
 				else {//JUMP
 					//Vector2 pos = transform.position;
@@ -78,7 +83,7 @@ public class BillRizer : MonoBehaviour {
 
 		}
 
-		if (Input.GetKey(KeyCode.LeftArrow)){
+		if (Input.GetKey(KeyCode.LeftArrow) && !fallingThrough){
 			//Debug.Log("LEFT!");
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
@@ -86,12 +91,12 @@ public class BillRizer : MonoBehaviour {
 			var vertExtent = Camera.main.camera.orthographicSize;   
 			var horzExtent = vertExtent * Screen.width / Screen.height;
 				
-			if (pos.x >= (Camera.main.camera.transform.position.x - horzExtent + leftBoundary)) {
+			if (pos.x >= (Camera.main.transform.position.x - horzExtent + leftBoundary)) {
 				transform.position = pos;
 			}
 		}
 
-		if (Input.GetKey(KeyCode.RightArrow)){
+		if (Input.GetKey(KeyCode.RightArrow) && !fallingThrough){
 			//Debug.Log("RIGHT!");
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
@@ -103,9 +108,6 @@ public class BillRizer : MonoBehaviour {
 			//Debug.Log("UP!");
 		}
 
-
-
-
 	}
 
 
@@ -113,16 +115,18 @@ public class BillRizer : MonoBehaviour {
 	{
 		Debug.Log ("BillRizer ! OnTriggerEnter2D!");
 		if (other.tag == "Floor") {
-
 			onFloor = true;
-			//TODO:position BillRizer at the top of the floor collider box .
-			//TODO: make sure BillRizer cannot go through the colliders (eg: If he's going at a high speed he'll fall straight through the collider)
-
-			Collider2D coll = GetComponent<Collider2D>();
+			fallingThrough = false;
 			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y/2; 
-
+			// pos.y = other.bounds.max.y + transform.localScale.y/2; 
 			transform.position = pos;
+		}
+		else if (other.tag == "Bottom") {
+			Debug.Log("Dead!!");
+			// Do death animation
+
+			transform.position = spawner.transform.position;
+
 		}
 	}
 
