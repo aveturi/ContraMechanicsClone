@@ -22,6 +22,35 @@ public class BillRizer : MonoBehaviour {
 	void Start () {
 	
 	}
+
+
+	void Update(){
+		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			//Debug.Log("DOWN!");
+			crouched = true;
+			
+		}
+		
+		if (Input.GetKeyUp (KeyCode.DownArrow)) {
+			Debug.Log("No longer crouched");
+			crouched = false;
+			
+		}
+
+
+		
+		// Z == B
+		if (Input.GetKey (KeyCode.Z)) {
+			//Debug.Log("Z!");
+			
+		}
+
+		
+		if (Input.GetKey (KeyCode.UpArrow)) {
+			//Debug.Log("UP!");
+		}
+
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -47,65 +76,37 @@ public class BillRizer : MonoBehaviour {
 			//Debug.Log ("X!");
 			if (onFloor) {
 				if (crouched) {
-					Debug.Log("Fall through");
+					//Debug.Log("Fall through");
 					onFloor = false;
 				}
 				else {//JUMP
-					//Vector2 pos = transform.position;
 					Vector2 jumpForce = new Vector2 (0f, jumpVal);
 					vel += (Vector2)jumpForce;
-					transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
-					//transform.position = pos;
+					transform.position = (Vector2)transform.position + vel * Time.deltaTime;
 				}
 			}
-		}
-
-		// Z == B
-		if (Input.GetKey (KeyCode.Z)) {
-			//Debug.Log("Z!");
-			
-		}
-
-		if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			//Debug.Log("DOWN!");
-			crouched = true;
-
-		}
-
-		if (Input.GetKeyUp (KeyCode.DownArrow)) {
-			Debug.Log("No longer crouched");
-			crouched = false;
-
 		}
 
 		if (Input.GetKey(KeyCode.LeftArrow)){
 			//Debug.Log("LEFT!");
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
-
+			
 			var vertExtent = Camera.main.camera.orthographicSize;   
 			var horzExtent = vertExtent * Screen.width / Screen.height;
-				
+			
 			if (pos.x >= (Camera.main.camera.transform.position.x - horzExtent + leftBoundary)) {
 				transform.position = pos;
 			}
 		}
-
+		
 		if (Input.GetKey(KeyCode.RightArrow)){
 			//Debug.Log("RIGHT!");
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
 			transform.position = pos;
-
+			
 		}
-
-		if (Input.GetKey (KeyCode.UpArrow)) {
-			//Debug.Log("UP!");
-		}
-
-
-
-
 	}
 
 
@@ -114,11 +115,15 @@ public class BillRizer : MonoBehaviour {
 		Debug.Log ("BillRizer ! OnTriggerEnter2D!");
 		if (other.tag == "Floor") {
 
+			if(transform.position.y < other.collider2D.bounds.max.y){
+				Debug.Log("transform.center "+transform.position.y);
+				Debug.Log("other.bounds.max.y "+ other.collider2D.bounds.max.y);
+				return;
+			}
 			onFloor = true;
 			//TODO:position BillRizer at the top of the floor collider box .
 			//TODO: make sure BillRizer cannot go through the colliders (eg: If he's going at a high speed he'll fall straight through the collider)
 
-			Collider2D coll = GetComponent<Collider2D>();
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y/2; 
 
