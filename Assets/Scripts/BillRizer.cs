@@ -16,6 +16,7 @@ public class BillRizer : MonoBehaviour {
 
 
 	public bool onFloor = false;
+	public bool crouched = false;
 	// Use this for initialization
 	void Start () {
 	
@@ -44,13 +45,17 @@ public class BillRizer : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.X)) {
 			Debug.Log ("X!");
 			if (onFloor) {
-					//JUMP
+				if (crouched) {
+					Debug.Log("Fall through");
+					onFloor = false;
+				}
+				else {//JUMP
 					//Vector2 pos = transform.position;
 					Vector2 jumpForce = new Vector2 (0f, jumpVal);
 					vel += (Vector2)jumpForce;
 					transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 					//transform.position = pos;
-
+				}
 			}
 		}
 
@@ -62,7 +67,14 @@ public class BillRizer : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.DownArrow)) {
 			Debug.Log("DOWN!");
-			//FallThroughFloor()
+			crouched = true;
+
+		}
+
+		if (Input.GetKeyUp (KeyCode.DownArrow)) {
+			Debug.Log("No longer crouched");
+			crouched = false;
+
 		}
 
 		if (Input.GetKey(KeyCode.LeftArrow)){
