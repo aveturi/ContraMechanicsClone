@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.tag == "BillRizer") {
-			BillRizer bill = other.gameObject.GetComponent<BillRizer>(); 
+			Bill bill = other.gameObject.GetComponent<Bill>(); 
 			bill.Damage();
 			Destroy (this.gameObject);
 		}
