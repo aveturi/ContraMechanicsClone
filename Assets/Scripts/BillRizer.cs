@@ -13,14 +13,19 @@ public class BillRizer : MonoBehaviour {
 	public Vector2		vel = Vector2.zero;
 	public float 		xSpeed = 0.09f;
 	public float 		jumpVal = 8.5f;
-
+	public float 		bulletDeltaSpace = 0.3f;
 	public bool 		onFloor = false;
 	public bool			inWater = false;
 	public bool 		crouched = false;
 	public bool 		fallingThrough = false;
 	//private Animator	anim;
 
+	public float 		timeBetweenSteps = 3f;
+	public float 		lastStep = 0;
+	public float 		bulletCount = 0;
+
 	public GameObject 	spawner;
+	public GameObject   bulletPrefab;
 
 	void Start () {
 		//anim = GetComponent<Animator>();
@@ -52,7 +57,7 @@ public class BillRizer : MonoBehaviour {
 		}
 
 		if (v < 0) {
-				crouched = true;
+			crouched = true;
 		} else {
 			crouched = false;
 		}
@@ -77,8 +82,34 @@ public class BillRizer : MonoBehaviour {
 		if (f > 0) { // fire a bullet horizontally for now
 
 		}
+
+		if (Input.GetKeyDown (KeyCode.Z)) {
+			if (canShoot()) {
+				Shoot();
+				bulletCount++;
+			}
+		}
 	}
-	
+
+	private bool canShoot() {
+		if (bulletCount < 4) {
+			return true;
+		}
+		else {
+			if (lastStep == 0) {
+				lastStep = Time.time;
+			}
+
+			if (Time.time - lastStep > timeBetweenSteps) {
+				lastStep = Time.time;
+				bulletCount = 0;
+				return true;
+			}
+			return false;
+		}
+	}
+
+
 	// Update is called once per frame
 	void FixedUpdate () {
 	
@@ -94,6 +125,16 @@ public class BillRizer : MonoBehaviour {
 
 	}
 
+	void Shoot() {
+		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
+		
+		Vector3 pos = transform.position;
+		pos.x += transform.localScale.x/2 + bulletDeltaSpace;
+		bullet.transform.position = pos;
+		
+		Bullet b = bullet.GetComponent<Bullet>();
+		b.SetVelocity(new Vector2(1f, 0f));
+	}
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
@@ -123,16 +164,12 @@ public class BillRizer : MonoBehaviour {
 			fallingThrough = false;
 			crouched = false;
 			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y/2; 
-			
+			pos.y = other.bounds.max.y + transform.localScale.y/2; 	
 			transform.position = pos;
 		}
 
 		else if (other.tag == "Bottom") {
-			Debug.Log("Dead!!");
-			// Do death animation
-			vel = Vector2.zero;
-			transform.position = spawner.transform.position;
+			damage();
 		}
 	}
 
@@ -150,5 +187,12 @@ public class BillRizer : MonoBehaviour {
 		if (other.tag == "Water") {
 			inWater = false;
 		}
+	}
+
+	public void damage() {
+		Debug.Log("Dead!!");
+		// Do death animation
+		vel = Vector2.zero;
+		transform.position = spawner.transform.position;
 	}
 }
