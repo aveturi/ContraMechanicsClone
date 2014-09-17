@@ -30,6 +30,36 @@ public class BillRizer : MonoBehaviour {
 
 
 	void Update(){
+		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			//Debug.Log("DOWN!");
+			crouched = true;
+		}
+		
+		if (Input.GetKeyUp (KeyCode.DownArrow)) {
+			Debug.Log("No longer crouched");
+			crouched = false;
+			
+		}
+		
+		if (Input.GetKey(KeyCode.LeftArrow) && !fallingThrough){
+			//Debug.Log("LEFT!");
+			Vector2 pos = transform.position;
+			pos.x -= xSpeed;
+			
+			var vertExtent = Camera.main.camera.orthographicSize;   
+			var horzExtent = vertExtent * Screen.width / Screen.height;
+			
+			if (pos.x >= (Camera.main.transform.position.x - horzExtent + leftBoundary)) {
+				transform.position = pos;
+			}
+		}
+		
+		if (Input.GetKey(KeyCode.RightArrow) && !fallingThrough){
+			//Debug.Log("RIGHT!");
+			Vector2 pos = transform.position;
+			pos.x += xSpeed;
+			transform.position = pos;		
+		}
 	}
 	
 	// Update is called once per frame
@@ -76,36 +106,7 @@ public class BillRizer : MonoBehaviour {
 			
 		}
 
-		if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			//Debug.Log("DOWN!");
-			crouched = true;
-		}
 
-		if (Input.GetKeyUp (KeyCode.DownArrow)) {
-			Debug.Log("No longer crouched");
-			crouched = false;
-
-		}
-
-		if (Input.GetKey(KeyCode.LeftArrow) && !fallingThrough){
-			//Debug.Log("LEFT!");
-			Vector2 pos = transform.position;
-			pos.x -= xSpeed;
-			
-			var vertExtent = Camera.main.camera.orthographicSize;   
-			var horzExtent = vertExtent * Screen.width / Screen.height;
-				
-			if (pos.x >= (Camera.main.transform.position.x - horzExtent + leftBoundary)) {
-				transform.position = pos;
-			}
-		}
-
-		if (Input.GetKey(KeyCode.RightArrow) && !fallingThrough){
-			//Debug.Log("RIGHT!");
-			Vector2 pos = transform.position;
-			pos.x += xSpeed;
-			transform.position = pos;		
-		}
 	}
 
 
