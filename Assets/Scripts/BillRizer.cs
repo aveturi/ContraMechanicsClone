@@ -11,9 +11,8 @@ public class BillRizer : MonoBehaviour {
 	public float 		leftBoundary = 1.2f;
 	public Vector2		gravity = new Vector2(0f,-9f);
 	public Vector2		vel = Vector2.zero;
-	public float		terminalYVelocity = -5f;
 	public float 		xSpeed = 0.09f;
-	public float 		jumpVal = 3f;
+	public float 		jumpVal = 8.5f;
 
 	public bool 		onFloor = false;
 	public bool			inWater = false;
@@ -33,7 +32,7 @@ public class BillRizer : MonoBehaviour {
 		float h = Input.GetAxisRaw ("Horizontal");
 		float v = Input.GetAxisRaw ("Vertical");
 		float j = Input.GetAxisRaw ("Jump");
-
+		float f = Input.GetAxisRaw ("Fire");
 
 		if (h > 0 && !fallingThrough) {
 			Vector2 pos = transform.position;
@@ -58,8 +57,8 @@ public class BillRizer : MonoBehaviour {
 			crouched = false;
 		}
 
-		if (j > 0) {
-		
+		if (Input.GetKeyDown(KeyCode.X)) {
+			
 			if(inWater) return;
 			
 			if (onFloor) {
@@ -68,11 +67,15 @@ public class BillRizer : MonoBehaviour {
 					fallingThrough = true;
 				}
 				else { // jump off of floor
-					Vector2 oldPos = transform.position;
-					oldPos.y += jumpVal;
-					transform.position = oldPos;
+					Vector2 jumpForce = new Vector2(0f,jumpVal);
+					vel += (Vector2)jumpForce;
+					transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
 				}
 			}
+		}
+
+		if (f > 0) { // fire a bullet horizontally for now
+
 		}
 	}
 	
@@ -81,15 +84,14 @@ public class BillRizer : MonoBehaviour {
 	
 		if (!onFloor && !inWater ) {
 			// Apply gravity and acc to vel
-			if (Mathf.Abs(vel.y)  <= Mathf.Abs(terminalYVelocity)) {
 				vel += (Vector2)Physics.gravity * Time.fixedDeltaTime;
-			}
 			
 			// Apple vel to position
 			transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 		} else {
 			vel = Vector2.zero;
 		}
+
 	}
 
 
