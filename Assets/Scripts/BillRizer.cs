@@ -169,7 +169,7 @@ public class BillRizer : MonoBehaviour {
 		}
 
 		else if (other.tag == "Bottom") {
-			damage();
+			Damage();
 		}
 	}
 
@@ -189,7 +189,7 @@ public class BillRizer : MonoBehaviour {
 		}
 	}
 
-	public void damage() {
+	public void Damage() {
 		Debug.Log("Dead!!");
 		// Do death animation
 		vel = Vector2.zero;

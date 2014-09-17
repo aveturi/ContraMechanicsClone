@@ -23,13 +23,10 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other.tag == "Floor") {
-			return;
+		if (other.tag == "BillRizer") {
+			BillRizer bill = other.gameObject.GetComponent<BillRizer>(); 
+			bill.Damage();
+			Destroy (this.gameObject);
 		}
-
-
-		BillRizer bill = other.gameObject.GetComponent<BillRizer>(); 
-		bill.damage();
-		Destroy (this.gameObject);
 	}
 }
