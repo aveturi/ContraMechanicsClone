@@ -11,10 +11,9 @@ public class BillRizer : MonoBehaviour {
 	public float 		leftBoundary = 1.2f;
 	public Vector2		gravity = new Vector2(0f,-9f);
 	public Vector2		vel = Vector2.zero;
-
+	public float		terminalYVelocity = -5f;
 	public float 		xSpeed = 0.09f;
-	public float 		jumpVal = 7f;
-
+	public float 		jumpVal = 3f;
 
 	public bool 		onFloor = false;
 	public bool			inWater = false;
@@ -30,19 +29,18 @@ public class BillRizer : MonoBehaviour {
 
 
 	void Update(){
-		if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			//Debug.Log("DOWN!");
-			crouched = true;
-		}
-		
-		if (Input.GetKeyUp (KeyCode.DownArrow)) {
-			Debug.Log("No longer crouched");
-			crouched = false;
-			
-		}
-		
-		if (Input.GetKey(KeyCode.LeftArrow) && !fallingThrough){
-			//Debug.Log("LEFT!");
+
+		float h = Input.GetAxisRaw ("Horizontal");
+		float v = Input.GetAxisRaw ("Vertical");
+		float j = Input.GetAxisRaw ("Jump");
+
+
+		if (h > 0 && !fallingThrough) {
+			Vector2 pos = transform.position;
+			pos.x += xSpeed;
+			transform.position = pos;
+
+		} else if (h < 0 && !fallingThrough) {
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
 			
@@ -53,60 +51,45 @@ public class BillRizer : MonoBehaviour {
 				transform.position = pos;
 			}
 		}
+
+		if (v < 0) {
+				crouched = true;
+		} else {
+			crouched = false;
+		}
+
+		if (j > 0) {
 		
-		if (Input.GetKey(KeyCode.RightArrow) && !fallingThrough){
-			//Debug.Log("RIGHT!");
-			Vector2 pos = transform.position;
-			pos.x += xSpeed;
-			transform.position = pos;		
+			if(inWater) return;
+			
+			if (onFloor) {
+				onFloor = false; //you're going to leave the floor either way
+				if (crouched) { // fall-through floor
+					fallingThrough = true;
+				}
+				else { // jump off of floor
+					Vector2 oldPos = transform.position;
+					oldPos.y += jumpVal;
+					transform.position = oldPos;
+				}
+			}
 		}
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-		//Vector2 pos = transform.position;
-		//pos.x += Input.GetAxis ("Horizontal") * Time.deltaTime * 3;
-		//pos.y += Input.GetAxis ("Vertical");
-		//transform.position = pos;
-
-		bool apply_gravity = false;
+	
 		if (!onFloor && !inWater ) {
 			// Apply gravity and acc to vel
-			vel += (Vector2)Physics.gravity * Time.fixedDeltaTime;
+			if (Mathf.Abs(vel.y)  <= Mathf.Abs(terminalYVelocity)) {
+				vel += (Vector2)Physics.gravity * Time.fixedDeltaTime;
+			}
 			
 			// Apple vel to position
 			transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 		} else {
 			vel = Vector2.zero;
 		}
-
-		// X == A
-		if (Input.GetKeyDown (KeyCode.X)) {
-			//Debug.Log ("X!");
-			if(inWater) return;
-
-			if (onFloor) {
-				if (crouched) {
-					//Debug.Log("Fall through");
-					onFloor = false;
-					fallingThrough = true;
-				}
-				else {//JUMP
-					Vector2 jumpForce = new Vector2 (0f, jumpVal);
-					vel += (Vector2)jumpForce;
-					transform.position = (Vector2)transform.position + vel * Time.deltaTime;
-				}
-			}
-		}
-
-		// Z == B
-		if (Input.GetKeyDown (KeyCode.Z)) {
-			//Debug.Log("Z!");
-			
-		}
-
-
 	}
 
 
