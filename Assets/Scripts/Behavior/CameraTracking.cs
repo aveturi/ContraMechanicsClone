@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FollowPlayer : MonoBehaviour {
+public class CameraTracking : MonoBehaviour {
 
 	public GameObject		player;
 

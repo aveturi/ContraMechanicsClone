@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Spawner : MonoBehaviour {
+public class BillSpawner : MonoBehaviour {
 
 	public float leftBoundary = 1.6f;
 
