@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraTracking : MonoBehaviour {
 
-	public GameObject		player;
+	public GameObject	player;
 
 	// Use this for initialization
 	void Start () {
