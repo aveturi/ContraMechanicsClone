@@ -5,7 +5,7 @@ public class BillController : Controller {
 	
 	private KeyCode		jumpKey = KeyCode.X;
 	private KeyCode		shootKey = KeyCode.Z;
-
+	
 	public BillController (ContraEntity entity) : base(entity) 
 	{
 	}
@@ -14,18 +14,39 @@ public class BillController : Controller {
 
 		float horizontalAxis = Input.GetAxisRaw ("Horizontal");
 		float verticalAxis = Input.GetAxisRaw ("Vertical");
+		Vector2	dir = new Vector2(entity.leftOrRight, 0);
 
 		if (horizontalAxis > 0) {
 			entity.MoveRight();
+			entity.leftOrRight = 1;
 			
 		} else if (horizontalAxis < 0) {
 			entity.MoveLeft();
+			entity.leftOrRight = -1;
+
 		}
 
+		dir.Set (entity.leftOrRight, 0);
+
 		if (verticalAxis < 0) {
-			entity.Crouch();
-		} else {
+			if (horizontalAxis != 0) {
+				dir.y = -1;
+			}
+			else {
+				entity.Crouch();
+			}
+		} 
+		else {
 			entity.Uncrouch();
+		}
+
+		if (verticalAxis > 0) {
+			if (horizontalAxis != 0) {
+				dir.y = 1;
+			}
+			else {
+				dir.Set (0, 1);
+			}
 		}
 
 		if (Input.GetKeyDown (jumpKey)) {
@@ -35,6 +56,7 @@ public class BillController : Controller {
 		if (Input.GetKeyDown (shootKey)) {
 			entity.Shoot();
 		}
-	
+
+		entity.dir = dir;
 	}
 }

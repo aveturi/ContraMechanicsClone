@@ -6,6 +6,12 @@ public abstract class ContraEntity : MonoBehaviour {
 	// Change to public
 	protected float 		health;
 	protected Controller	controller;
+	public Vector2		dir {get; set;}
+	public int				leftOrRight; // [1 = Right, -1 = Left]
+
+	public virtual void SetDirection(Vector2 dir) {
+		this.dir = dir;
+	}
 
 	public virtual void MoveLeft() {}
 	public virtual void MoveRight() {}

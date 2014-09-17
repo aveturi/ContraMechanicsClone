@@ -73,7 +73,7 @@ public class FootSoldier : ContraEntity {
 	void OnTriggerExit2D (Collider2D other){
 		if (other.tag == "Floor") {
 			Jump();
-		} else if (other.tag == "Water" || other.tag == "Bullet") {
+		} else if (other.tag == "Water") {
 			this.Damage();
 		}
 	}

@@ -16,6 +16,7 @@ public class Bill : ContraEntity {
 	// Use this for initialization
 	void Start () {
 		controller = new BillController (this);
+		leftOrRight = 1;
 	}
 	
 	// Update is called once per frame
@@ -129,11 +130,12 @@ public class Bill : ContraEntity {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 		
 		Vector3 pos = transform.position;
-		pos.x += transform.localScale.x/2 + bulletDeltaSpace;
+		pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
+	
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
-		b.SetVelocity(new Vector2(1f, 0f));
+		b.SetVelocity(dir);
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
