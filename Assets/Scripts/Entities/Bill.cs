@@ -17,6 +17,7 @@ public class Bill : ContraEntity {
 	void Start () {
 		controller = new BillController (this);
 		leftOrRight = 1;
+		health = 3;
 	}
 	
 	// Update is called once per frame
@@ -44,7 +45,7 @@ public class Bill : ContraEntity {
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
 			
-			var vertExtent = Camera.main.camera.orthographicSize;   
+			var vertExtent = Camera.main.camera.orthographicSize;
 			var horzExtent = vertExtent * Screen.width / Screen.height;
 			
 			if (pos.x >= (Camera.main.transform.position.x - horzExtent + leftBoundary)) {
@@ -64,7 +65,9 @@ public class Bill : ContraEntity {
 	public override void Jump() {
 		if (!inWater && onFloor) {
 			if (isCrouched) {
-				FallThrough();
+				if (canFallThrough()) {
+					FallThrough();
+				}
 			}
 			else {
 				PerformJump();
@@ -90,6 +93,34 @@ public class Bill : ContraEntity {
 	public override void FallThrough() {
 		isFallingThrough = true;
 		onFloor = false;
+	}
+
+	private bool canFallThrough() {
+		Vector2 pointA = (Vector2) renderer.bounds.min;
+
+		Vector2 pointB = (Vector2) renderer.bounds.max;
+		var vertExtent = Camera.main.camera.orthographicSize;
+		pointB.y = -vertExtent;
+
+		Collider2D[] others = Physics2D.OverlapAreaAll(pointA, pointB);
+
+		bool haveSeenMyFloor = false;
+
+		foreach (var other in others) {
+			if (other.tag == "Floor") {
+				if (haveSeenMyFloor) {
+					return true;
+				}
+				else {
+					haveSeenMyFloor = true;
+				}
+			}
+			else if (other.tag == "Water") {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private float	lastStep;
@@ -122,9 +153,6 @@ public class Bill : ContraEntity {
 			return false;
 		}
 	}
-
-	public GameObject   bulletPrefab;
-	private float 		bulletDeltaSpace = 0.3f;
 
 	private void PerformShoot() {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
@@ -167,10 +195,6 @@ public class Bill : ContraEntity {
 			pos.y = other.bounds.max.y + transform.localScale.y/2; 	
 			transform.position = pos;
 		}
-		
-		else if (other.tag == "Bottom") {
-			Damage();
-		}
 	}
 	
 	void OnTriggerExit2D (Collider2D other){
@@ -183,10 +207,23 @@ public class Bill : ContraEntity {
 		}
 	}
 
+	private void Respawn() {
+		vel = Vector2.zero;
+		transform.position = spawner.transform.position;
+		bulletCount = 0;
+		leftOrRight = 1;
+	}
+
 	public override void Damage(int damageTaken = 0) {
 		Debug.Log("Dead!!");
 		// Do death animation
-		vel = Vector2.zero;
-		transform.position = spawner.transform.position;
+		health--;
+		if (health > 0) {
+			Respawn ();
+		}
+		else {
+			Debug.Log("Game Over");
+			Destroy	(gameObject);
+		}
 	}
 }

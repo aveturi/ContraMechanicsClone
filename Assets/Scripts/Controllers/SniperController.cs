@@ -7,9 +7,7 @@ public class SniperController : Controller {
 	public SniperController (ContraEntity entity) : base(entity) 
 	{
 	}
-	
-	
-	
+
 	public override void Run () {
 		
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");

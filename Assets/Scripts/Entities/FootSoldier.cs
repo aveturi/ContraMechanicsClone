@@ -64,8 +64,10 @@ public class FootSoldier : ContraEntity {
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 			
 			transform.position = pos;
+
 		} else if (other.tag == "BillRizer") {
-			// make billrizer die.
+			Bill bill = other.gameObject.GetComponent<Bill>(); 
+			bill.Damage();
 		}
 		
 	}

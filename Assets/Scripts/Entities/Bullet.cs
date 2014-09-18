@@ -1,12 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Bullet : MonoBehaviour {
 
-	private Vector2 velocity = Vector2.zero;
-	private float speed = 8f;
+	private 		Vector2 velocity = Vector2.zero;
+	public 			float speed = 8f;
+	private 		List<string> safeTags;
+	protected 		int damageVal = 10;
+
 	// Use this for initialization
 	void Start () {
+		safeTags = new List<string>()
+		{
+			"Floor",
+			"Bridge",
+			"Boundary",
+			"Water",
+			"Bullet"
+		};
 	}
 
 	public void SetVelocity(Vector2 velocity){
@@ -24,9 +36,9 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other.tag != "Floor" && other.tag != "Water") {
+		if (!safeTags.Contains(other.tag)) {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
-			entity.Damage(10);
+			entity.Damage(damageVal);
 			Destroy (this.gameObject);
 		}
 	}

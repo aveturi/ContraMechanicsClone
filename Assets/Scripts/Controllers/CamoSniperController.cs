@@ -3,31 +3,28 @@ using System.Collections;
 
 public class CamoSniperController : Controller {
 
+	private GameObject 		bill = null;
 
 	public CamoSniperController (ContraEntity entity) : base(entity) 
 	{
+		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 	}
 
-
-	
 	public override void Run () {
 
 		entity.Uncrouch ();
 
-		
-		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
 		if (bill == null) {
 			return;
 		} else {
 			entity.leftOrRight = (bill.transform.position.x < entity.transform.position.x) ? -1 : 1;
 			entity.dir = new Vector2(entity.leftOrRight, 0);
-
 		}
 		
 		if (entity.leftOrRight < 1) {
-			// do facing left animation
+			entity.MoveLeft();
 		} else {
-			// do facing right animation
+			entity.MoveRight();
 		}
 
 		// adjust direction && shoot
@@ -35,7 +32,6 @@ public class CamoSniperController : Controller {
 
 		entity.Crouch ();
 
-	    
 	}
 
 }

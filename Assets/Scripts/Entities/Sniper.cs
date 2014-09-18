@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Sniper : ContraEntity {
-	private float xRange;
-	private float screenWidth;
-	private bool    activated= false;
+	private float 	xRange;
+	private float 	screenWidth;
+	private bool    activated = false;
 
 	private float	lastStep;
 	private int		bulletCount = 0;
@@ -26,10 +26,10 @@ public class Sniper : ContraEntity {
 
 	public override void Shoot() {
 		if (CanShoot ()) {
-			Debug.Log ("Sniper canshoot!");
+			// Debug.Log ("Sniper canshoot!");
 			PerformShoot ();
 		} else {
-			Debug.Log("Sniper can't shoot!");
+			// Debug.Log("Sniper can't shoot!");
 		}
 	}
 
@@ -63,9 +63,6 @@ public class Sniper : ContraEntity {
 			return false;
 		}
 	}
-
-	public GameObject   bulletPrefab;
-	private float 		bulletDeltaSpace = 0.3f;
 	
 	private void PerformShoot() {
 		//Debug.Log ("Sniper shoot!");
@@ -73,20 +70,17 @@ public class Sniper : ContraEntity {
 		
 		Vector3 pos = transform.position;
 		pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
-		pos.y += ((transform.localScale.y/2 + bulletDeltaSpace)  * (upOrDown));
+		// pos.y += ((transform.localScale.y/2 + bulletDeltaSpace)  * (upOrDown)); 
+		// Not needed since bullets are always instantiated from the side, right?
+
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
-		b.SetVelocity(dir*0.1f);
+		b.speed *= 0.5f;
+		b.SetVelocity(dir);
 		bulletCount++;
 	}
-
-	void OnTriggerEnter2D (Collider2D other)
-	{
-		if (other.tag == "Bullet") {
-			this.Damage();
-		}
-	}
+	
 	public override void Damage(int damageTaken = 0) {
 		Destroy (this.gameObject);
 	}

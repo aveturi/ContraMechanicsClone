@@ -3,21 +3,25 @@ using System.Collections;
 
 public class CamoSniper : ContraEntity {
 
-	public bool isCrouched;
+	public bool 	isCrouched;
 
-	public float xRange = 10f;
-	public float yRange = 1f;
+	public float 	xRange = 10f;
+	public float 	yRange = 1f;
 
 	private float	lastStep;
 	private int		bulletCount = 0;
 	private float 	timeBetweenSteps = 5f;
 	private	int		numMaxBullets = 1;
 
-	private bool    activated= false;
+	private bool    activated = false;
 	private float	screenWidth;
+
+	private GameObject	bill;
+
 	// Use this for initialization
 	void Start () {
 		controller = new CamoSniperController (this);
+		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 
 		// set xRange so that CamoSniper only shoots once Bill can see it
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
@@ -38,7 +42,6 @@ public class CamoSniper : ContraEntity {
 	}
 
 	private bool CanShoot(){
-		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
 
 		var xDist = Mathf.Abs(Mathf.Abs(bill.transform.position.x) - Mathf.Abs(this.transform.position.x));
 		var yDist = Mathf.Abs(Mathf.Abs(bill.transform.position.y) - Mathf.Abs(this.transform.position.y));
@@ -70,9 +73,6 @@ public class CamoSniper : ContraEntity {
 		}
 	}
 
-	public GameObject   bulletPrefab;
-	private float 		bulletDeltaSpace = 0.3f;
-
 	private void PerformShoot() {
 		//Debug.Log ("CamoSniper Shoot!");
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
@@ -83,7 +83,8 @@ public class CamoSniper : ContraEntity {
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
-		b.SetVelocity(dir*0.1f);
+		b.speed *= 0.5f;
+		b.SetVelocity(dir);
 		bulletCount++;
 	}
 
@@ -95,14 +96,7 @@ public class CamoSniper : ContraEntity {
 
 		Destroy (this.gameObject);
 	}
-
-
-	void OnTriggerEnter2D (Collider2D other)
-	{
-		if (other.tag == "Bullet") {
-			this.Damage();
-		}
-	}
+	
 
 	public override void Crouch() {
 		isCrouched = true;
