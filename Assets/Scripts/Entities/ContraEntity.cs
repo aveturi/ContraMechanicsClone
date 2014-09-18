@@ -8,7 +8,7 @@ public abstract class ContraEntity : MonoBehaviour {
 	protected Controller	controller;
 	public Vector2		dir {get; set;}
 	public int				leftOrRight; // [1 = Right, -1 = Left]
-
+	public int				upOrDown; // [1 = up, -1 = down]
 	public virtual void SetDirection(Vector2 dir) {
 		this.dir = dir;
 	}

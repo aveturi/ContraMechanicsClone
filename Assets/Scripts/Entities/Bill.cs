@@ -141,9 +141,8 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
-			Debug.Log("Collided with a floor!");
 			if( (transform.position.y) < other.bounds.max.y){
-				Debug.Log("Feet not on floor!");
+
 				if(!inWater)
 					return;
 			}
@@ -159,7 +158,7 @@ public class Bill : ContraEntity {
 		}
 		
 		else if (other.tag == "Water") {
-			Debug.Log("InWater!");
+			//Debug.Log("InWater!");
 			inWater = true;
 			onFloor = false;
 			isFallingThrough = false;
