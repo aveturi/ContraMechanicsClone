@@ -9,7 +9,8 @@ public class Bullet : MonoBehaviour {
 	private 		List<string> safeTags;
 	protected 		int damageVal = 1;
 	public			ContraEntity owner { set; get; }
-
+	public			string ownerTag;
+	public			float screenWidth;
 	// Use this for initialization
 	void Awake () {
 		safeTags = new List<string>()
@@ -20,6 +21,8 @@ public class Bullet : MonoBehaviour {
 			"Water",
 			"Bullet"
 		};
+		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
 	}
 
 	public void SetVelocity(Vector2 velocity){
@@ -33,11 +36,23 @@ public class Bullet : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+		// if the x distance from the owner is > 1 screenWidth, kill bullet
+
+		if (this.owner == null)
+						return;
+		var distanceFromOwner = Mathf.Abs(this.owner.transform.position.x - this.transform.position.x);
+
+		if (distanceFromOwner > this.screenWidth) {
+			if(this.gameObject != null){
+				Destroy(this.gameObject);
+			}
+		}
+
+		ownerTag = this.owner.tag;
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != owner.tag) {
+		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != this.ownerTag) {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
 			entity.Damage(damageVal);
 			Destroy (this.gameObject);

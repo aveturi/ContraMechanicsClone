@@ -8,10 +8,11 @@ public class Bill : ContraEntity {
 	public bool 		isCrouched;
 	public bool 		inWater;
 	public bool 		onFloor;
-	public float 		xSpeed = 0.09f;
-	public float 		jumpVal = 8.5f;
+	public float 		xSpeed = 0.05f;
+	public float 		jumpVal = 10.5f;
 	public Vector2		vel = Vector2.zero;
 	public GameObject 	spawner;
+	public float		gravityVal = -18f;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,7 @@ public class Bill : ContraEntity {
 	void FixedUpdate () {	
 		if (!onFloor && !inWater ) {
 			// Apply gravity and acc to vel
-			vel += (Vector2) Physics.gravity * Time.fixedDeltaTime;
+			vel += new Vector2(0,gravityVal) * Time.fixedDeltaTime;
 			
 			// Apple vel to position
 			transform.position = (Vector2) transform.position + vel * Time.fixedDeltaTime;
