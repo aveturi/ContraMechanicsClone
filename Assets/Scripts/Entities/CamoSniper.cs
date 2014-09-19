@@ -19,7 +19,7 @@ public class CamoSniper : ContraEntity {
 	private GameObject	bill;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		controller = new CamoSniperController (this);
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 
@@ -41,7 +41,7 @@ public class CamoSniper : ContraEntity {
 		}
 	}
 
-	private bool CanShoot(){
+	protected bool CanShoot(){
 
 		var xDist = Mathf.Abs(Mathf.Abs(bill.transform.position.x) - Mathf.Abs(this.transform.position.x));
 		var yDist = Mathf.Abs(Mathf.Abs(bill.transform.position.y) - Mathf.Abs(this.transform.position.y));
@@ -84,6 +84,7 @@ public class CamoSniper : ContraEntity {
 		
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.speed *= 0.5f;
+		b.owner = this;
 		b.SetVelocity(dir);
 		bulletCount++;
 	}

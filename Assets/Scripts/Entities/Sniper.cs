@@ -11,17 +11,26 @@ public class Sniper : ContraEntity {
 	private float 	timeBetweenSteps = 3f;
 	private	int		numMaxBullets = 3;
 	
-	void Start () {
+	protected void Start () {
 		controller = new SniperController (this);
-		
+
 		// set xRange so that Sniper only shoots once Bill can see it
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		xRange = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect)/2;
 		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
 	}
 
+	protected float t_lastStep = 0;
+	protected float t_timeBetweenSteps = 0.5f;
+
 	void Update(){
-		controller.Run ();
+		if (t_lastStep == 0) {
+			t_lastStep = Time.time;
+		}
+		else if (Time.time - t_lastStep > t_timeBetweenSteps) {
+			controller.Run ();
+			t_lastStep = Time.time;
+		}
 	}
 
 	public override void Shoot() {
@@ -77,6 +86,7 @@ public class Sniper : ContraEntity {
 		
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.speed *= 0.5f;
+		b.owner = this;
 		b.SetVelocity(dir);
 		bulletCount++;
 	}

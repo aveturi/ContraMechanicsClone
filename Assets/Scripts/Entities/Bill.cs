@@ -17,7 +17,7 @@ public class Bill : ContraEntity {
 	void Start () {
 		controller = new BillController (this);
 		leftOrRight = 1;
-		health = 3;
+		health = 1000;
 	}
 	
 	// Update is called once per frame
@@ -163,6 +163,7 @@ public class Bill : ContraEntity {
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
+		b.owner = this;
 		b.SetVelocity(dir);
 	}
 

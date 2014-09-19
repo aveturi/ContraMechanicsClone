@@ -7,10 +7,11 @@ public class Bullet : MonoBehaviour {
 	private 		Vector2 velocity = Vector2.zero;
 	public 			float speed = 8f;
 	private 		List<string> safeTags;
-	protected 		int damageVal = 10;
+	protected 		int damageVal = 1;
+	public			ContraEntity owner { set; get; }
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		safeTags = new List<string>()
 		{
 			"Floor",
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		if (!safeTags.Contains(other.tag)) {
+		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != owner.tag) {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
 			entity.Damage(damageVal);
 			Destroy (this.gameObject);
