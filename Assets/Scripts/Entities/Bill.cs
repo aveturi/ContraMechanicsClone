@@ -14,8 +14,12 @@ public class Bill : ContraEntity {
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
 
+
+	Gun gun;
+
 	// Use this for initialization
 	void Start () {
+		this.gun = new MGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 1000;
@@ -124,49 +128,13 @@ public class Bill : ContraEntity {
 		return false;
 	}
 
-	private float	lastStep;
-	private int		bulletCount = 0;
-	private float 	timeBetweenSteps = 2f;
-	private	int		numMaxBullets = 4;
+
 
 	public override void Shoot() {
-		if (canShoot()) {
-			PerformShoot();
-			bulletCount++;
-		}
+		gun.Shoot ();
 	}
 
-	private bool canShoot() {
-		if (bulletCount < numMaxBullets) {
-			return true;
-		}
-		else {
-			if (lastStep == 0) {
-				lastStep = Time.time;
-			}
-			
-			else if (Time.time - lastStep > timeBetweenSteps) {
-				lastStep = Time.time;
-				bulletCount = 0;
-				return true;
-			}
 
-			return false;
-		}
-	}
-
-	private void PerformShoot() {
-		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
-		
-		Vector3 pos = transform.position;
-		pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
-	
-		bullet.transform.position = pos;
-		
-		Bullet b = bullet.GetComponent<Bullet>();
-		b.owner = this;
-		b.SetVelocity(dir);
-	}
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
@@ -210,11 +178,12 @@ public class Bill : ContraEntity {
 	private void Respawn() {
 		vel = Vector2.zero;
 		transform.position = spawner.transform.position;
-		bulletCount = 0;
 		leftOrRight = 1;
+
+		gun = new BasicGun (this);
 	}
 
-	public override void Damage(int damageTaken = 0) {
+	public override void Damage(float damageTaken = 0) {
 		Debug.Log("Dead!!");
 		// Do death animation
 		health--;

@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour {
 	private 		Vector2 velocity = Vector2.zero;
 	public 			float speed = 8f;
 	private 		List<string> safeTags;
-	protected 		int damageVal = 1;
+	protected 		float damageVal = 1f;
 	public			ContraEntity owner { set; get; }
 	public			string ownerTag;
 	public			float screenWidth;
@@ -57,5 +57,13 @@ public class Bullet : MonoBehaviour {
 			entity.Damage(damageVal);
 			Destroy (this.gameObject);
 		}
+	}
+
+	public void SetDamage(float d){
+		this.damageVal = d;
+	}
+
+	public void SetSpeed(float s){
+		speed = s;
 	}
 }

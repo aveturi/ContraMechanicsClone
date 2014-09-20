@@ -9,7 +9,7 @@ public class Cannon : CamoSniper {
 		health = 6;
 	}
 	
-	public override void Damage(int damageTaken) {
+	public override void Damage(float damageTaken) {
 		health -= damageTaken;
 		if (health == 0) {
 			Debug.Log("Cannon destroyed");

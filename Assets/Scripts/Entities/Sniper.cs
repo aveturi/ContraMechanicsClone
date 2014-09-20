@@ -91,7 +91,7 @@ public class Sniper : ContraEntity {
 		bulletCount++;
 	}
 	
-	public override void Damage(int damageTaken = 0) {
+	public override void Damage(float damageTaken = 0) {
 		Destroy (this.gameObject);
 	}
 }

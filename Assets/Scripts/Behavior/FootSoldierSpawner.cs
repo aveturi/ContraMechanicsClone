@@ -5,16 +5,11 @@ using System.Collections.Generic;
 public class FootSoldierSpawner : MonoBehaviour {
 
 	GameObject footSoldier;
-	// Use this for initialization
-	void Start () {
-
-
-	}
 	
 	protected float t_lastStep = 0;
-	protected float t_timeBetweenSteps = 5f;
+	protected float t_timeBetweenSteps = 2f;
 	
-	void FixedUpdate(){ // spin a timer down and te
+	void FixedUpdate(){ 
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
 		}
@@ -37,14 +32,12 @@ public class FootSoldierSpawner : MonoBehaviour {
 		// set XY Coords for overlap rectangle
 		int screenDirection = Random.Range (0, 2);// 0 IS LEFT ; 1 IS RIGHT
 		if (screenDirection == 0) { 
-			Debug.Log ("		Left!");
 			pointA.x = -0.1f; //TODO: tune this.
 			pointA.y = 0f;
 
 			pointB.x = +0f;
 			pointB.y = 1f;
 		} else {
-			Debug.Log("Right!");
 			pointA.x = +1.1f; //TODO: tune this.
 			pointA.y = 0f;
 

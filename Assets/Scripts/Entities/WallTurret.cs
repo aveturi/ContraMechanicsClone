@@ -9,9 +9,9 @@ public class WallTurret : Sniper {
 		health = 5;
 	}
 
-	public override void Damage(int damageTaken) {
+	public override void Damage(float damageTaken) {
 		health -= damageTaken;
-		if (health == 0) {
+		if (health <= 0) {
 			Debug.Log("Wall Turret destroyed");
 			Destroy (gameObject);
 		}

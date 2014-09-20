@@ -90,7 +90,7 @@ public class CamoSniper : ContraEntity {
 	}
 
 
-	public override void Damage(int damageTaken = 0) {
+	public override void Damage(float damageTaken = 0) {
 		//Debug.Log("Dead!!");
 
 		//TODO: Do death animation
