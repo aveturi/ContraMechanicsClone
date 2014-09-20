@@ -171,31 +171,31 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
-			if( (transform.position.y) < other.bounds.max.y){
+			if ((transform.position.y) < other.bounds.max.y) {
 
-				if(!inWater)
-					return;
+					if (!inWater)
+							return;
 			}
 			onFloor = true;
 			isFallingThrough = false;
 			//TODO:position BillRizer at the top of the floor collider box .
 			//TODO: make sure BillRizer cannot go through the colliders (eg: If he's going at a high speed he'll fall straight through the collider)
-			
+
 			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y/2; 
-			
+			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
+
 			transform.position = pos;
-		}
-		
-		else if (other.tag == "Water") {
+		} else if (other.tag == "Water") {
 			//Debug.Log("InWater!");
 			inWater = true;
 			onFloor = false;
 			isFallingThrough = false;
 			isCrouched = false;
 			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y/2; 	
+			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
 			transform.position = pos;
+		} else if (other.tag == "Enemy") {
+			this.Damage();
 		}
 	}
 	

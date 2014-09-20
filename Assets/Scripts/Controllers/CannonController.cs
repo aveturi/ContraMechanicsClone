@@ -14,6 +14,11 @@ public class CannonController : Controller {
 			if (bill == null) {
 				return;	
 			}
+
+		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		Vector2 screenPos = mainCamera.camera.WorldToViewportPoint(entity.transform.position);
+		if(screenPos.x > 1.0 || screenPos.x <0.0)
+			return;
 			entity.leftOrRight = -1;
 			entity.dir = new Vector2(entity.leftOrRight, 0);
 			
