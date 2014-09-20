@@ -5,18 +5,17 @@ public class FootSoldier : ContraEntity {
 
 	private bool 		onFloor = false;
 	private Vector2		vel = Vector2.zero;
-	private float 		xSpeed = -1f;
+	private float 		xSpeed = 1f;
 	private float 		jumpVal = 7.5f;
-	
-	// Use this for initialization
+	private int			billDirection;
+
+
+
 	void Start () {
-	
+		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
+		billDirection = (bill.transform.position.x < this.transform.position.x) ? -1 : 1; 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -27,18 +26,19 @@ public class FootSoldier : ContraEntity {
 			// Apple vel to position
 			transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 		} else {
-			MoveLeft();
+			if(billDirection < 0) MoveLeft();
+			else MoveRight();
 		}
 	}
 
 	public override void MoveLeft() {
-		vel = new Vector2(xSpeed, 0f);	
+		vel = new Vector2(-1f*xSpeed, 0f);	
 		transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 	}
 	
 	public override void MoveRight() {
 		vel = new Vector2(xSpeed, 0f);	
-		transform.position = (Vector2)transform.position - vel * Time.fixedDeltaTime;
+		transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 	}
 	
 	public override void Jump() {

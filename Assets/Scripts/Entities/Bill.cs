@@ -178,8 +178,6 @@ public class Bill : ContraEntity {
 			}
 			onFloor = true;
 			isFallingThrough = false;
-			//TODO:position BillRizer at the top of the floor collider box .
-			//TODO: make sure BillRizer cannot go through the colliders (eg: If he's going at a high speed he'll fall straight through the collider)
 
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 

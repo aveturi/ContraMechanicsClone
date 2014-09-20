@@ -19,6 +19,7 @@ public class SniperController : Controller {
 
 			var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 			Vector2 screenPos = mainCamera.camera.WorldToViewportPoint(entity.transform.position);
+	
 			if(screenPos.x > 1.0 || screenPos.x <0.0)
 				return;
 		
