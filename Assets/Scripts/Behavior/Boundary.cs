@@ -11,8 +11,8 @@ public class Boundary : MonoBehaviour {
 		}
 		else {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
-			if(other.tag != "PowerUp")
-			entity.Damage();
+			if(entity != null)
+				entity.Damage();
 		}
 	}
 }
