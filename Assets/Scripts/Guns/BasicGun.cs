@@ -3,6 +3,9 @@ using System.Collections;
 
 public class BasicGun : Gun {
 
+	private KeyCode		shootKey = KeyCode.Z;
+
+
 	public BasicGun (ContraEntity entity) {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;

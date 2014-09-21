@@ -15,11 +15,11 @@ public class Bill : ContraEntity {
 	public float		gravityVal = -18f;
 
 
-	Gun gun;
+	public Gun gun;
 
 	// Use this for initialization
 	void Start () {
-		this.gun = new MGun(this);
+		this.gun = new SGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 1000;
