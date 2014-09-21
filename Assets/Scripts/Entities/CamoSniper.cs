@@ -19,7 +19,7 @@ public class CamoSniper : ContraEntity {
 	private GameObject	bill;
 
 	// Use this for initialization
-	protected void Start () {
+	protected virtual void Start () {	
 		controller = new CamoSniperController (this);
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 
@@ -30,7 +30,7 @@ public class CamoSniper : ContraEntity {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
 		controller.Run ();
 	}
 

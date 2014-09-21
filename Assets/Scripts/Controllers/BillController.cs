@@ -5,9 +5,11 @@ public class BillController : Controller {
 	
 	private KeyCode		jumpKey = KeyCode.X;
 	private KeyCode		shootKey = KeyCode.Z;
-	
+	private Bill		bill = null;
+
 	public BillController (ContraEntity entity) : base(entity) 
 	{
+		bill = entity as Bill;
 	}
 
 	public override void Run () {
@@ -23,14 +25,16 @@ public class BillController : Controller {
 		} else if (horizontalAxis < 0) {
 			entity.MoveLeft();
 			entity.leftOrRight = -1;
-
 		}
 
 		dir.Set (entity.leftOrRight, 0);
 
 		if (verticalAxis < 0) {
-			if (horizontalAxis != 0) {
+			if (horizontalAxis != 0) { //Moving horizontally
 				dir.y = -1;
+			}
+			else if (!bill.onFloor && !bill.inWater) {
+				dir.Set (0, -1);
 			}
 			else {
 				entity.Crouch();

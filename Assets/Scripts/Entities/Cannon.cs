@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Cannon : CamoSniper {
+public class Cannon : Sniper {
 
-	void Start () {
+	protected override void Start () {
 		base.Start ();
 		controller = new CannonController (this);
 		health = 6;
+		numMaxBullets = 1;
+		timeBetweenSteps = 0f;
+		t_timeBetweenSteps = 4f;
 	}
 	
 	public override void Damage(float damageTaken) {

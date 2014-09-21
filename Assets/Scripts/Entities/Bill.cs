@@ -13,8 +13,8 @@ public class Bill : ContraEntity {
 	public Vector2		vel = Vector2.zero;
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
-
-
+	public bool			invincibleFlag = false;
+	public int			invincibleSeconds = 2;
 	Gun gun;
 
 	// Use this for initialization
@@ -23,6 +23,7 @@ public class Bill : ContraEntity {
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 1000;
+		Respawn ();
 	}
 	
 	// Update is called once per frame
@@ -88,16 +89,43 @@ public class Bill : ContraEntity {
 	}
 
 	public override void Crouch() {
-		isCrouched = true;
+		if (!isCrouched && !isFallingThrough && (onFloor || inWater)) {
+			var t_y = renderer.bounds.min.y;
+			
+			Vector3 scale = transform.localScale;
+			scale.y = scale.y / 2 ;
+			transform.localScale = scale;
+			
+			var pos = transform.position;
+			pos.y -= (pos.y - t_y) / 2;
+			transform.position = pos;
+
+			isCrouched = true;
+
+		}
 	}
 
 	public override void Uncrouch() {
-		isCrouched = false;
+
+		if (isCrouched) {
+			var t_y = renderer.bounds.min.y;
+
+			Vector3 scale = transform.localScale;
+			scale.y = scale.y * 2 ;
+			transform.localScale = scale;
+
+			var pos = transform.position;
+			pos.y += (pos.y - t_y) ;
+			transform.position = pos;
+
+			isCrouched = false;
+		}
 	}
 
 	public override void FallThrough() {
 		isFallingThrough = true;
 		onFloor = false;
+		Uncrouch();
 	}
 
 	private bool canFallThrough() {
@@ -151,7 +179,9 @@ public class Bill : ContraEntity {
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 
 			transform.position = pos;
+
 		} else if (other.tag == "Water") {
+
 			//Debug.Log("InWater!");
 			inWater = true;
 			onFloor = false;
@@ -160,6 +190,7 @@ public class Bill : ContraEntity {
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
 			transform.position = pos;
+
 		} else if (other.tag == "Enemy") {
 			this.Damage();
 		}
@@ -183,8 +214,21 @@ public class Bill : ContraEntity {
 		gun = new BasicGun (this);
 	}
 
+	private void SetVincible() {
+		invincibleFlag = false;
+	}
+
+
 	public override void Damage(float damageTaken = 0) {
-		Debug.Log("Dead!!");
+
+		if (invincibleFlag) {
+			return;
+		}
+
+		invincibleFlag = true;
+
+		Invoke("SetVincible", invincibleSeconds);
+		//Debug.Log("Dead!!");
 		// Do death animation
 		health--;
 		if (health > 0) {

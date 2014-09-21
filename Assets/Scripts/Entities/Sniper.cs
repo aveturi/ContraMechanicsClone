@@ -2,28 +2,29 @@
 using System.Collections;
 
 public class Sniper : ContraEntity {
-	private float 	xRange;
-	private float 	screenWidth;
-	private bool    activated = false;
-
-	private float	lastStep;
-	private int		bulletCount = 0;
-	private float 	timeBetweenSteps = 3f;
-	private	int		numMaxBullets = 3;
+	protected float 	xRange;
+	protected float 	screenWidth;
+	protected bool    	activated = false;
+	public	bool 		isWaterSniper = false;
+	protected float		lastStep;
+	protected int		bulletCount = 0;
+	protected float 	timeBetweenSteps = 3f;
+	protected int		numMaxBullets = 3;
 	
-	protected void Start () {
+	protected virtual void Start () {
 		controller = new SniperController (this);
 
 		// set xRange so that Sniper only shoots once Bill can see it
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
-		xRange = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect)/2;
 		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
+		xRange = screenWidth/2;
+		
 	}
 
 	protected float t_lastStep = 0;
 	protected float t_timeBetweenSteps = 0.5f;
 
-	void Update(){
+	protected virtual void Update(){
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
 		}
@@ -43,7 +44,7 @@ public class Sniper : ContraEntity {
 	}
 
 
-	private bool CanShoot(){
+	protected virtual bool CanShoot(){
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
 		
 		var xDist = Mathf.Abs(Mathf.Abs(bill.transform.position.x) - Mathf.Abs(this.transform.position.x));
@@ -73,7 +74,7 @@ public class Sniper : ContraEntity {
 		}
 	}
 	
-	private void PerformShoot() {
+	protected virtual void PerformShoot() {
 		//Debug.Log ("Sniper shoot!");
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 		

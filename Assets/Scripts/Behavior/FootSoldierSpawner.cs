@@ -5,11 +5,28 @@ using System.Collections.Generic;
 public class FootSoldierSpawner : MonoBehaviour {
 
 	GameObject footSoldier;
-	
+	public GameObject	marker;
+	GameObject	bill;
+	public float prob = 0.4f; // Probability that a foot soldier will spawn
+	bool enabled = true;
 	protected float t_lastStep = 0;
 	protected float t_timeBetweenSteps = 2f;
-	
-	void FixedUpdate(){ 
+
+	void Start() {
+		bill = GameObject.FindGameObjectWithTag ("BillRizer");
+	}
+
+	void FixedUpdate(){
+
+		if (!enabled) {
+			return;
+		}
+
+		if (bill.transform.position.x >= marker.transform.position.x) {
+			enabled = false;
+
+		}
+
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
 		}
@@ -17,7 +34,10 @@ public class FootSoldierSpawner : MonoBehaviour {
 
 			// Timer has run down.
 			// Call the SpawnFootSoldier function TODO:with some probability
-			SpawnFootSoldier();
+			if (Random.value <= prob) {
+				SpawnFootSoldier();
+			}
+
 			t_lastStep = Time.time;
 		}
 	}
@@ -60,8 +80,9 @@ public class FootSoldierSpawner : MonoBehaviour {
 		}
 
 		// check to see if there are any possible floors
-		if (possibleFloors.Count == 0)
-						return;
+		if (possibleFloors.Count == 0) {
+			return;
+		}
 
 		//pick a random platform from those candidates
 		GameObject chosenPlatform = possibleFloors [Random.Range (0, possibleFloors.Count)];

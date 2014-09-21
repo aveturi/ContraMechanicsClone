@@ -16,6 +16,7 @@ public class BillSpawner : MonoBehaviour {
 		var vertExtent = Camera.main.camera.orthographicSize;   
 		var horzExtent = vertExtent * Screen.width / Screen.height;
 		pos.x = Camera.main.transform.position.x - horzExtent + leftBoundary;
+		pos.x = Mathf.Max (transform.position.x, pos.x);
 		transform.position = pos;
 	}
 }

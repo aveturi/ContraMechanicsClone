@@ -1,30 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CannonController : Controller {
-	
-	private GameObject 		bill = null;
+public class CannonController : SniperController {
 
 	public CannonController (ContraEntity entity) : base(entity) 
 	{
-		bill = GameObject.FindGameObjectWithTag ("BillRizer");
+		angleBoundary = 45f;
 	}
-	
-	public override void Run () {
-			if (bill == null) {
-				return;	
-			}
 
-		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
-		Vector2 screenPos = mainCamera.camera.WorldToViewportPoint(entity.transform.position);
-		if(screenPos.x > 1.0 || screenPos.x <0.0)
-			return;
-			entity.leftOrRight = -1;
-			entity.dir = new Vector2(entity.leftOrRight, 0);
-			
-			if (bill.transform.position.x < entity.transform.position.x) {
-				entity.Shoot();
-			}
-
+	protected override float adjustAngle(float angle) {
+		return angle;
 	}
+
+	protected override bool canShoot(float angle) {
+		var t = angle / angleBoundary;
+		if (t > 4 && t < 8) {
+			return true;
+		}
+		else return false;
+	}
+
 }

@@ -3,10 +3,13 @@ using System.Collections;
 
 public class WallTurret : Sniper {
 
-	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		base.Start ();
+		controller = new WallTurretController (this);
 		health = 5;
+		numMaxBullets = 1;
+		timeBetweenSteps = 0f;
+		t_timeBetweenSteps = 2f;
 	}
 
 	public override void Damage(float damageTaken) {
@@ -16,4 +19,5 @@ public class WallTurret : Sniper {
 			Destroy (gameObject);
 		}
 	}
+
 }
