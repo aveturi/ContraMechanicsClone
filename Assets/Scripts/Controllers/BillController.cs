@@ -61,7 +61,6 @@ public class BillController : Controller {
 		} else if (Input.GetKey (shootKey)) {
 			//Debug.Log("If i have an MGun, continuously shoot!");
 			Bill bill = entity as Bill; 
-			Debug.Log("bill gun type " + bill.gun.GetType());
 			if(bill.gun.GetType().ToString() == "MGun"){
 				entity.Shoot();
 			}

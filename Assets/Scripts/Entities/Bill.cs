@@ -19,7 +19,7 @@ public class Bill : ContraEntity {
 
 	// Use this for initialization
 	void Start () {
-		this.gun = new SGun(this);
+		this.gun = new BasicGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 1000;
@@ -193,6 +193,18 @@ public class Bill : ContraEntity {
 		else {
 			Debug.Log("Game Over");
 			Destroy	(gameObject);
+		}
+	}
+
+	public void PowerUp(string powerUpType){
+		if (powerUpType == "SGun") {
+			this.gun = new SGun (this);
+		} else if (powerUpType == "MGun") {
+			this.gun = new MGun(this);
+		}else if (powerUpType == "LGun") {
+			this.gun = new MGun(this);
+		}else if (powerUpType == "FGun") {
+			this.gun = new MGun(this);
 		}
 	}
 }

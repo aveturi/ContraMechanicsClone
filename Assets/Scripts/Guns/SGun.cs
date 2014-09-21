@@ -63,10 +63,6 @@ public class SGun : Gun {
 			bullets.Add(bullet);
 			b.SetVelocity (RotateZ(entity.dir,rotations[i]));
 		}
-
-
-		//set 5 velocities
-
 	}
 
 	public static Vector2 RotateZ(Vector2 vector, float angle )

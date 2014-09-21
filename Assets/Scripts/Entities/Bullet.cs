@@ -19,7 +19,8 @@ public class Bullet : MonoBehaviour {
 			"Bridge",
 			"Boundary",
 			"Water",
-			"Bullet"
+			"Bullet",
+			"PowerUp"
 		};
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
