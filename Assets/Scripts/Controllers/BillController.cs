@@ -5,6 +5,7 @@ public class BillController : Controller {
 	
 	private KeyCode		jumpKey = KeyCode.X;
 	private KeyCode		shootKey = KeyCode.Z;
+	private KeyCode		invincibleKey = KeyCode.G;
 	private Bill		bill = null;
 
 	public BillController (ContraEntity entity) : base(entity) 
@@ -68,6 +69,10 @@ public class BillController : Controller {
 			if(bill.gun.GetType().ToString() == "MGun"){
 				entity.Shoot();
 			}
+		}
+
+		if (Input.GetKeyDown (invincibleKey)) {
+			bill.invincibleMode = !bill.invincibleMode;	
 		}
 
 		entity.dir = dir;

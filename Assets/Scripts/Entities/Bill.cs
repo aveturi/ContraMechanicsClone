@@ -246,7 +246,7 @@ public class Bill : ContraEntity {
 
 		bool isUnderWater = (inWater && isCrouched);
 
-		if (invincibleFlag || isUnderWater) {
+		if (invincibleFlag || isUnderWater || invincibleMode) {
 			return;
 		}
 
