@@ -36,7 +36,7 @@ public class BossCannon : ContraEntity {
 		
 		Vector3 pos = transform.position;
 		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
-		
+		pos.z = 0.1f;
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
@@ -48,7 +48,7 @@ public class BossCannon : ContraEntity {
 	public override void Damage (float damageTaken)
 	{
 		this.health--;
-		if (health == 0) {
+		if (health <= 0) {
 			Destroy(this.gameObject);
 		}
 	}

@@ -30,16 +30,19 @@ public class Bullet : MonoBehaviour {
 	public void SetVelocity(Vector2 velocity){
 		velocity.Normalize ();
 		this.velocity = velocity * speed;
+
+		var pos = transform.position;
+		pos.z = 0.1f;
+		transform.position = pos;
 	}
 
 	void FixedUpdate(){
 		transform.position = (Vector2)transform.position + velocity * Time.fixedDeltaTime;
 
 	}
-
+	
 	// Update is called once per frame
 	void Update () {
-
 		if (!onCamera ()) {
 			Destroy (this.gameObject);
 		}

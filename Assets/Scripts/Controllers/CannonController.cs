@@ -13,8 +13,7 @@ public class CannonController : SniperController {
 	}
 
 	protected override bool canShoot(float angle) {
-		var t = angle / angleBoundary;
-		if (t == 315 || t == 270) {
+		if (angle == 315 || angle == 270) {
 			return true;
 		}
 		else return false;

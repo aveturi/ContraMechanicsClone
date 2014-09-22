@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BasicGun : Gun {
 
-	private KeyCode		shootKey = KeyCode.Z;
+	private KeyCode	shootKey = KeyCode.Z;
 	
 	public BasicGun (ContraEntity entity) {
 		this.entity = entity;
@@ -44,7 +44,7 @@ public class BasicGun : Gun {
 
 		Vector3 pos = entity.transform.position;
 		// pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
-
+		pos.z = 0.1f;
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();

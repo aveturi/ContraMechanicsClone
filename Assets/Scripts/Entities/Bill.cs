@@ -14,16 +14,19 @@ public class Bill : ContraEntity {
 	public Vector2		vel = Vector2.zero;
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
-	public bool			invincibleFlag = false;
-	public int			invincibleSeconds = 10;	
+	private bool		invincibleFlag = false;
+	private int			invincibleSeconds = 2;	
 	public Gun 			gun;
+
+	public	bool		invincibleMode = false;
 
 	// Use this for initialization
 	void Start () {
 		this.gun = new BasicGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
-		health = 1000;
+		health = 3;
+		if (invincibleMode) health = 1000;
 		Respawn ();
 	}
 	
@@ -261,6 +264,7 @@ public class Bill : ContraEntity {
 		else {
 			Debug.Log("Game Over");
 			Destroy	(gameObject);
+			Application.LoadLevel("Level_1");
 		}
 	}
 

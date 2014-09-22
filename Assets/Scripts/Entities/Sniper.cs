@@ -11,17 +11,12 @@ public class Sniper : ContraEntity {
 	
 	protected virtual void Start () {
 		controller = new SniperController (this);
-
-
 	}
 
 	protected float t_lastStep = 0;
 	protected float t_timeBetweenSteps = 0.5f;
 
-	protected virtual void Update(){
-
-
-
+	protected virtual void Update() {
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
 		}
@@ -32,7 +27,7 @@ public class Sniper : ContraEntity {
 	}
 
 	public override void Shoot() {
-		if (CanShoot ()) {
+		if (CanShoot () && renderer.enabled) {
 			// Debug.Log ("Sniper canshoot!");
 			PerformShoot ();
 		} else {
@@ -43,9 +38,6 @@ public class Sniper : ContraEntity {
 
 	protected virtual bool CanShoot(){
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
-		
-		var xDist = Mathf.Abs(bill.transform.position.x - this.transform.position.x);
-
 		if (this.onCamera()) {
 
 			
@@ -75,7 +67,7 @@ public class Sniper : ContraEntity {
 		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
 		// pos.y += ((transform.localScale.y/2 + bulletDeltaSpace)  * (upOrDown)); 
 		// Not needed since bullets are always instantiated from the side, right?
-
+		pos.z = 0.1f;
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();

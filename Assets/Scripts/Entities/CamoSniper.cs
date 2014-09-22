@@ -79,7 +79,7 @@ public class CamoSniper : ContraEntity {
 		
 		Vector3 pos = transform.position;
 		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
-		
+		pos.z = 0.1f;
 		bullet.transform.position = pos;
 
 		Bullet b = bullet.GetComponent<Bullet>();
@@ -89,6 +89,29 @@ public class CamoSniper : ContraEntity {
 		bulletCount++;
 	}
 
+	private void ScaleUp() {
+		var t_y = renderer.bounds.min.y;
+		
+		Vector3 scale = transform.localScale;
+		scale.y = scale.y * 2 ;
+		transform.localScale = scale;
+		
+		var pos = transform.position;
+		pos.y += (pos.y - t_y) ;
+		transform.position = pos;
+	}
+	
+	private void ScaleDown() {
+		var t_y = renderer.bounds.min.y;
+		
+		Vector3 scale = transform.localScale;
+		scale.y = scale.y / 2 ;
+		transform.localScale = scale;
+		
+		var pos = transform.position;
+		pos.y -= (pos.y - t_y) / 2;
+		transform.position = pos;
+	}
 
 	public override void Damage(float damageTaken = 0) {
 		//Debug.Log("Dead!!");
@@ -100,12 +123,18 @@ public class CamoSniper : ContraEntity {
 	
 
 	public override void Crouch() {
+		if (!isCrouched) {
+			ScaleDown ();		
+		}
 		isCrouched = true;
 		//TODO: wait here for a short time lag
 	}
 
 
 	public override void Uncrouch() {
+		if (isCrouched) {
+			ScaleUp ();	
+		}
 		isCrouched = false;
 	}
 }

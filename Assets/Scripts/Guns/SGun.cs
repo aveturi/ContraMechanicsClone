@@ -53,8 +53,9 @@ public class SGun : Gun {
 		//create 5 bullets with no velocity but all other properties set
 		for (int i=0; i<5; ++i) {
 			GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
-			Vector3 pos =entity.transform.position;
-			pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
+			Vector3 pos = entity.transform.position;
+			// pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
+			pos.z = 0.1f;
 			bullet.transform.position = pos;
 			Bullet b = bullet.GetComponent<Bullet>();
 			b.SetDamage (this.bulletDamage);

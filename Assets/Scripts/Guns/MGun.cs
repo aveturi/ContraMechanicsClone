@@ -47,7 +47,7 @@ public class MGun : Gun {
 			
 		Vector3 pos =entity.transform.position;
 		// pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
-		
+		pos.z = 0.1f;
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();

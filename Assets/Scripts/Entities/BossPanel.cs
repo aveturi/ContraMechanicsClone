@@ -16,7 +16,7 @@ public class BossPanel : ContraEntity {
 	public override void Damage(float damageTaken = 0) {
 		Debug.Log ("Took Damage!");
 		this.health--;
-		if (health == 0) {
+		if (health <= 0) {
 			Destroy(this.gameObject);
 		}
 	}
