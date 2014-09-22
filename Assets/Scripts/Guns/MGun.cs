@@ -54,6 +54,7 @@ public class MGun : Gun {
 		b.SetDamage (this.bulletDamage);
 		b.SetSpeed (this.bulletSpeed);
 		b.owner = entity;
+		b.ownerTag = entity.tag;
 		b.SetVelocity(entity.dir);
 	}
 }

@@ -5,7 +5,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 
 	public GameObject powerup; 
 	public string gunType = "SGun";
-	public bool open = false;
+	public bool isOpen = false;
 
 	public float 	timeBetweenSteps = 2f;
 	public float 	lastStep = 0;
@@ -17,10 +17,10 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 	
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.tag == "Bullet" && open) {
+		if (other.tag == "Bullet" && isOpen) {
 
 			Bullet bullet = other.gameObject.GetComponent<Bullet>();
-			if(bullet.owner.tag == "BillRizer"){
+			if(bullet.ownerTag == "BillRizer"){
 
 				powerup.transform.position = this.transform.position;
 				PowerUp p = powerup.GetComponent<PowerUp>();
@@ -32,7 +32,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate(){
+	void FixedUpdate() {
 		if (lastStep == 0) {
 			lastStep = Time.time;
 		}
@@ -40,13 +40,15 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 		else if (Time.time - lastStep > timeBetweenSteps) {
 			lastStep = Time.time;
 
-			if(this.open == false) {
+			if(this.isOpen == false) {
 				//Debug.Log ("Open"); 
-				this.open = true;
-			} else if(this.open == true){
+				this.isOpen = true;
+			} else if(this.isOpen == true){
 				//Debug.Log("Closed");
-				this.open = false;
+				this.isOpen = false;
 			}
 		}
+
+		renderer.enabled = isOpen;
 	}
 }

@@ -60,6 +60,7 @@ public class SGun : Gun {
 			b.SetDamage (this.bulletDamage);
 			b.SetSpeed (this.bulletSpeed);
 			b.owner = entity;
+			b.ownerTag = entity.tag;
 			bullets.Add(bullet);
 			b.speed = 10f;
 			b.SetVelocity (RotateZ(entity.dir,rotations[i]));

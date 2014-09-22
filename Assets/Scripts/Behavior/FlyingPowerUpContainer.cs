@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class FlyingPowerUpContainer : StationaryPowerUpContainer {
@@ -10,7 +10,7 @@ public class FlyingPowerUpContainer : StationaryPowerUpContainer {
 
 	private bool active = false;
 	void Awake(){
-		this.open = false;
+		this.isOpen = false;
 		baseYCoord = transform.position.y;
 		this.renderer.enabled = false;
 	}
@@ -24,7 +24,7 @@ public class FlyingPowerUpContainer : StationaryPowerUpContainer {
 		if (this.transform.position.x < cameraLeftBound.x + this.transform.localScale.x/2) {
 			active = true;
 			this.renderer.enabled = true;
-			this.open = true;
+			this.isOpen = true;
 		}
 	}
 

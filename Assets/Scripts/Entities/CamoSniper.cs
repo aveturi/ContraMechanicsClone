@@ -81,9 +81,10 @@ public class CamoSniper : ContraEntity {
 		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
 		
 		bullet.transform.position = pos;
-		
+
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.owner = this;
+		b.ownerTag = this.tag;
 		b.SetVelocity(dir);
 		bulletCount++;
 	}
