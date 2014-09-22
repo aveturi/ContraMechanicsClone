@@ -4,14 +4,13 @@ using System.Collections;
 public class BridgeExploding : MonoBehaviour {
 
 	bool timerStart = false;
-	float startTime;
-	public float delta = 1f;
+	double startTime;
+	public double delta = 0f;
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "BillRizer") {
 
 			//TODO: do destruction graphics
-			//TODO: Make BillRizer stay on bridge
 			if(!timerStart){
 				timerStart = true;
 				startTime = Time.time;
@@ -19,7 +18,7 @@ public class BridgeExploding : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate(){
+	void Update(){
 		if (timerStart) {
 			if(Time.time > (this.startTime+delta)){
 				Debug.Log(this.gameObject.name +" has been destroyed");

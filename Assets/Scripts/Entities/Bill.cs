@@ -203,16 +203,11 @@ public class Bill : ContraEntity {
 
 		} else if (other.tag == "Enemy") {
 			this.Damage ();
-		} else if (other.tag == "Bridge") {
+		} else if (other.tag == "Bridge" && transform.position.y + transform.localScale.y/2 >= other.bounds.max.y) {
 			this.onBridge = true;
 		}
 	}
 
-	void OnTriggerStay2D (Collider2D other){
-		if (other.tag == "Bridge") {
-			this.onBridge = true;
-		}
-	}
 
 	void OnTriggerExit2D (Collider2D other){
 		if (other.tag == "Floor") {
