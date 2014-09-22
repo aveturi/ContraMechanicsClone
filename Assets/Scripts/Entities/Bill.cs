@@ -8,6 +8,7 @@ public class Bill : ContraEntity {
 	public bool 		isCrouched;
 	public bool 		inWater;
 	public bool 		onFloor;
+	public bool         onBridge;
 	public float 		xSpeed = 0.05f;
 	public float 		jumpVal = 10.5f;
 	public Vector2		vel = Vector2.zero;
@@ -33,7 +34,7 @@ public class Bill : ContraEntity {
 
 	// Update is called once per frame
 	void FixedUpdate () {	
-		if (!onFloor && !inWater ) {
+		if (!onFloor && !inWater && !onBridge ) {
 			// Apply gravity and acc to vel
 			vel += new Vector2(0,gravityVal) * Time.fixedDeltaTime;
 			
@@ -69,7 +70,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void Jump() {
-		if (!inWater && onFloor) {
+		if (!inWater && (onFloor || onBridge)) {
 			if (isCrouched) {
 				if (canFallThrough()) {
 					FallThrough();
@@ -83,6 +84,7 @@ public class Bill : ContraEntity {
 
 	private void PerformJump() {
 		onFloor = false;
+		onBridge = false;
 		Vector2 jumpForce = new Vector2(0f, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
@@ -125,6 +127,7 @@ public class Bill : ContraEntity {
 	public override void FallThrough() {
 		isFallingThrough = true;
 		onFloor = false;
+		onBridge = false;
 		Uncrouch();
 	}
 
@@ -167,38 +170,50 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
-			if ((transform.position.y) < other.bounds.max.y) {
+				if ((transform.position.y) < other.bounds.max.y) {
 
-					if (!inWater)
-							return;
-			}
-			onFloor = true;
-			isFallingThrough = false;
+						if (!inWater)
+								return;
+				}
+				onFloor = true;
+				isFallingThrough = false;
 
-			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
+				Vector2 pos = transform.position;
+				pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 
-			transform.position = pos;
+				transform.position = pos;
 
 		} else if (other.tag == "Water") {
 
-			//Debug.Log("InWater!");
-			inWater = true;
-			onFloor = false;
-			isFallingThrough = false;
-			isCrouched = false;
-			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
-			transform.position = pos;
+				//Debug.Log("InWater!");
+				inWater = true;
+				onFloor = false;
+				isFallingThrough = false;
+				isCrouched = false;
+				Vector2 pos = transform.position;
+				pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
+				transform.position = pos;
 
 		} else if (other.tag == "Enemy") {
-			this.Damage();
+				this.Damage ();
+		} else if (other.tag == "Bridge") {
+			this.onBridge = true;
 		}
 	}
-	
+
+	void OnTriggerStay2D (Collider2D other){
+		if (other.tag == "Bridge") {
+			this.onBridge = true;
+		}
+	}
+
 	void OnTriggerExit2D (Collider2D other){
 		if (other.tag == "Floor") {
 			onFloor = false;
+		}
+
+		if (other.tag == "Bridge") {
+			onBridge = false;
 		}
 		
 		if (other.tag == "Water") {

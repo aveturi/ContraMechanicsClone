@@ -9,6 +9,7 @@ public class PowerUp : MonoBehaviour{
 	public float		newFiringRate = 0.7f;
 	public string gunType = null;
 	private float		jumpVal = 15f;
+	private float		xSpeed = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -65,7 +66,7 @@ public class PowerUp : MonoBehaviour{
 
 	private void PerformJump() {
 		onFloor = false;
-		Vector2 jumpForce = new Vector2(0f, jumpVal);
+		Vector2 jumpForce = new Vector2(xSpeed, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
 	}

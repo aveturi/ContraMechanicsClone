@@ -9,7 +9,7 @@ public class BasicGun : Gun {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;
 		bulletCount = 0;
-		timeBetweenSteps = 0.8f;
+		timeBetweenSteps = 0.9f;
 		numMaxBullets = 4;
 	}
 
@@ -49,7 +49,7 @@ public class BasicGun : Gun {
 		
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.owner = entity;
-		b.speed = 10f;
+		b.speed = 9f;
 //		Debug.Log ("The owner is " + b.owner);
 		b.SetVelocity(entity.dir);
 	}

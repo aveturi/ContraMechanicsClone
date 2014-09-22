@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour {
 	protected 		float damageVal = 1f;
 	public			ContraEntity owner { set; get; }
 	public			float screenWidth;
+
 	// Use this for initialization
 	void Awake () {
 		safeTags = new List<string>()
@@ -38,6 +39,10 @@ public class Bullet : MonoBehaviour {
 	void Update () {
 		// if the x distance from the owner is > 1 screenWidth, kill bullet
 
+		if (!onCamera()) {
+			Destroy(this.gameObject);
+		}
+
 		if (this.owner == null)
 						return;
 		var distanceFromOwner = Mathf.Abs(this.owner.transform.position.x - this.transform.position.x);
@@ -63,5 +68,14 @@ public class Bullet : MonoBehaviour {
 
 	public void SetSpeed(float s){
 		speed = s;
+	}
+
+	public bool onCamera(){
+		
+		// set xRange so that Sniper only shoots once Bill can see it
+		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		var leftPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (0f,0f));
+		var rightPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (1f,1f));
+		return (this.transform.position.x > leftPoint.x && this.transform.position.x < rightPoint.x);
 	}
 }

@@ -5,7 +5,7 @@ public class BridgeExploding : MonoBehaviour {
 
 	bool timerStart = false;
 	float startTime;
-	float delta = 0.2f;
+	public float delta = 1f;
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "BillRizer") {
@@ -23,6 +23,9 @@ public class BridgeExploding : MonoBehaviour {
 		if (timerStart) {
 			if(Time.time > (this.startTime+delta)){
 				Debug.Log(this.gameObject.name +" has been destroyed");
+				GameObject billObject = GameObject.FindGameObjectWithTag("BillRizer");
+				Bill bill = billObject.GetComponent<Bill>();
+				bill.onBridge = false;
 				Destroy(this.gameObject);
 			}
 		}

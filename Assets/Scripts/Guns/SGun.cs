@@ -48,7 +48,7 @@ public class SGun : Gun {
 
 
 		List<GameObject> bullets = new List<GameObject>();
-		float[] rotations = new float[5] {0f, 0.5f, 1f, -0.5f, -1f};
+		float[] rotations = new float[5] {0f, 1/16f, 1/8f, -1/16f, -1/8f};
 
 		//create 5 bullets with no velocity but all other properties set
 		for (int i=0; i<5; ++i) {
