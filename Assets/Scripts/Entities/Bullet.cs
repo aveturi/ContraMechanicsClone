@@ -8,7 +8,8 @@ public class Bullet : MonoBehaviour {
 	public 			float speed = 4f;
 	private 		List<string> safeTags;
 	protected 		float damageVal = 1f;
-	public			ContraEntity owner { set; get; }
+	public			string ownerTag = "";
+	public			ContraEntity owner;
 	public			float screenWidth;
 	// Use this for initialization
 	void Awake () {
@@ -32,25 +33,27 @@ public class Bullet : MonoBehaviour {
 
 	void FixedUpdate(){
 		transform.position = (Vector2)transform.position + velocity * Time.fixedDeltaTime;
+
 	}
 
 	// Update is called once per frame
 	void Update () {
 		// if the x distance from the owner is > 1 screenWidth, kill bullet
-
-		if (this.owner == null)
-						return;
-		var distanceFromOwner = Mathf.Abs(this.owner.transform.position.x - this.transform.position.x);
-
-		if (distanceFromOwner > this.screenWidth) {
-			if(this.gameObject != null){
-				Destroy(this.gameObject);
-			}
+		if (!onCamera ()) {
+			Destroy ( this.gameObject);
 		}
 	}
 
+	public bool onCamera(){
+		// set xRange so that Sniper only shoots once Bill can see it
+		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		var leftPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (0f,0f));
+		var rightPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (1f,1f));
+		return (this.transform.position.x > leftPoint.x && this.transform.position.x < rightPoint.x);
+	}
+
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != this.owner.tag) {
+		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != this.ownerTag) {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
 			entity.Damage(damageVal);
 			Destroy (this.gameObject);

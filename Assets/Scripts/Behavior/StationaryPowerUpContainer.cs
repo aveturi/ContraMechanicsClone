@@ -20,7 +20,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 		if (other.tag == "Bullet" && open) {
 
 			Bullet bullet = other.gameObject.GetComponent<Bullet>();
-			if(bullet.owner.tag == "BillRizer"){
+			if(bullet.ownerTag == "BillRizer"){
 
 				powerup.transform.position = this.transform.position;
 				PowerUp p = powerup.GetComponent<PowerUp>();

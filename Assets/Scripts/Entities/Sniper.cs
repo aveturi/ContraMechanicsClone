@@ -80,6 +80,7 @@ public class Sniper : ContraEntity {
 		
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.owner = this;
+		b.ownerTag = this.tag;
 		b.SetVelocity(dir);
 		bulletCount++;
 	}

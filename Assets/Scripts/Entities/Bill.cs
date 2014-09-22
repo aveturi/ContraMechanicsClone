@@ -14,7 +14,7 @@ public class Bill : ContraEntity {
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
 	public bool			invincibleFlag = false;
-	public int			invincibleSeconds = 2;	
+	public int			invincibleSeconds = 10;	
 	public Gun 			gun;
 
 	// Use this for initialization
@@ -47,7 +47,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void MoveLeft() {
-		if (!isFallingThrough) {
+		if (!isFallingThrough && !isCrouched) {
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
 			
@@ -61,7 +61,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void MoveRight() {
-		if (!isFallingThrough) {
+		if (!isFallingThrough && !isCrouched) {
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
 			transform.position = pos;
@@ -90,36 +90,41 @@ public class Bill : ContraEntity {
 
 	public override void Crouch() {
 		if (!isCrouched && !isFallingThrough && (onFloor || inWater)) {
-			var t_y = renderer.bounds.min.y;
-			
-			Vector3 scale = transform.localScale;
-			scale.y = scale.y / 2 ;
-			transform.localScale = scale;
-			
-			var pos = transform.position;
-			pos.y -= (pos.y - t_y) / 2;
-			transform.position = pos;
-
+			ScaleDown();
 			isCrouched = true;
-
 		}
 	}
 
 	public override void Uncrouch() {
 
 		if (isCrouched) {
-			var t_y = renderer.bounds.min.y;
-
-			Vector3 scale = transform.localScale;
-			scale.y = scale.y * 2 ;
-			transform.localScale = scale;
-
-			var pos = transform.position;
-			pos.y += (pos.y - t_y) ;
-			transform.position = pos;
-
+			ScaleUp();
 			isCrouched = false;
 		}
+	}
+
+	private void ScaleUp() {
+		var t_y = renderer.bounds.min.y;
+
+		Vector3 scale = transform.localScale;
+		scale.y = scale.y * 2 ;
+		transform.localScale = scale;
+		
+		var pos = transform.position;
+		pos.y += (pos.y - t_y) ;
+		transform.position = pos;
+	}
+
+	private void ScaleDown() {
+		var t_y = renderer.bounds.min.y;
+		
+		Vector3 scale = transform.localScale;
+		scale.y = scale.y / 2 ;
+		transform.localScale = scale;
+		
+		var pos = transform.position;
+		pos.y -= (pos.y - t_y) / 2;
+		transform.position = pos;
 	}
 
 	public override void FallThrough() {
@@ -162,8 +167,6 @@ public class Bill : ContraEntity {
 		gun.Shoot ();
 	}
 
-
-
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
@@ -174,7 +177,11 @@ public class Bill : ContraEntity {
 			}
 			onFloor = true;
 			isFallingThrough = false;
-
+			if (inWater) {
+				ScaleUp();
+				inWater = false;
+			}
+		
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 
@@ -187,6 +194,9 @@ public class Bill : ContraEntity {
 			onFloor = false;
 			isFallingThrough = false;
 			isCrouched = false;
+
+			ScaleDown();
+
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
 			transform.position = pos;
@@ -200,17 +210,25 @@ public class Bill : ContraEntity {
 		if (other.tag == "Floor") {
 			onFloor = false;
 		}
-		
-		if (other.tag == "Water") {
+
+		else if (other.tag == "Water") {
+			if (inWater) ScaleUp();
 			inWater = false;
 		}
 	}
 
 	private void Respawn() {
 		vel = Vector2.zero;
+
+		if (inWater) {
+			ScaleUp();
+			inWater = false;
+		}
+
 		transform.position = spawner.transform.position;
 		leftOrRight = 1;
-
+		invincibleFlag = true;
+		Invoke("SetVincible", invincibleSeconds);
 		gun = new BasicGun (this);
 	}
 
@@ -221,13 +239,12 @@ public class Bill : ContraEntity {
 
 	public override void Damage(float damageTaken = 0) {
 
-		if (invincibleFlag) {
+		bool isUnderWater = (inWater && isCrouched);
+
+		if (invincibleFlag || isUnderWater) {
 			return;
 		}
 
-		invincibleFlag = true;
-
-		Invoke("SetVincible", invincibleSeconds);
 		//Debug.Log("Dead!!");
 		// Do death animation
 		health--;
