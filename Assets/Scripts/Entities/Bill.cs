@@ -14,12 +14,12 @@ public class Bill : ContraEntity {
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
 	public bool			invincibleFlag = false;
-	public int			invincibleSeconds = 2;
-	Gun gun;
+	public int			invincibleSeconds = 2;	
+	public Gun 			gun;
 
 	// Use this for initialization
 	void Start () {
-		this.gun = new MGun(this);
+		this.gun = new BasicGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 1000;
@@ -237,6 +237,18 @@ public class Bill : ContraEntity {
 		else {
 			Debug.Log("Game Over");
 			Destroy	(gameObject);
+		}
+	}
+
+	public void PowerUp(string powerUpType){
+		if (powerUpType == "SGun") {
+			this.gun = new SGun (this);
+		} else if (powerUpType == "MGun") {
+			this.gun = new MGun(this);
+		} else if (powerUpType == "LGun") {
+			this.gun = new MGun(this);
+		} else if (powerUpType == "FGun") {
+			this.gun = new MGun(this);
 		}
 	}
 }

@@ -43,8 +43,8 @@ public class CamoSniper : ContraEntity {
 
 	protected bool CanShoot(){
 
-		var xDist = Mathf.Abs(Mathf.Abs(bill.transform.position.x) - Mathf.Abs(this.transform.position.x));
-		var yDist = Mathf.Abs(Mathf.Abs(bill.transform.position.y) - Mathf.Abs(this.transform.position.y));
+		var xDist = Mathf.Abs(bill.transform.position.x - this.transform.position.x);
+		var yDist = Mathf.Abs(bill.transform.position.y - this.transform.position.y);
 
 
 		if (xDist < xRange && yDist < yRange) {
@@ -78,12 +78,11 @@ public class CamoSniper : ContraEntity {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 		
 		Vector3 pos = transform.position;
-		pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
+		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
 		
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
-		b.speed *= 0.5f;
 		b.owner = this;
 		b.SetVelocity(dir);
 		bulletCount++;

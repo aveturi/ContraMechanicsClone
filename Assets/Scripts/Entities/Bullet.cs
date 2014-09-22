@@ -5,11 +5,10 @@ using System.Collections.Generic;
 public class Bullet : MonoBehaviour {
 
 	private 		Vector2 velocity = Vector2.zero;
-	public 			float speed = 8f;
+	public 			float speed = 4f;
 	private 		List<string> safeTags;
 	protected 		float damageVal = 1f;
 	public			ContraEntity owner { set; get; }
-	public			string ownerTag;
 	public			float screenWidth;
 	// Use this for initialization
 	void Awake () {
@@ -19,7 +18,8 @@ public class Bullet : MonoBehaviour {
 			"Bridge",
 			"Boundary",
 			"Water",
-			"Bullet"
+			"Bullet",
+			"PowerUp"
 		};
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
@@ -47,12 +47,10 @@ public class Bullet : MonoBehaviour {
 				Destroy(this.gameObject);
 			}
 		}
-
-		ownerTag = this.owner.tag;
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != this.ownerTag) {
+		if (other != null && other.tag != null && !safeTags.Contains(other.tag) && other.tag != this.owner.tag) {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
 			entity.Damage(damageVal);
 			Destroy (this.gameObject);

@@ -56,9 +56,18 @@ public class BillController : Controller {
 		if (Input.GetKeyDown (jumpKey)) {
 			entity.Jump();
 		}
-		
+
+
 		if (Input.GetKeyDown (shootKey)) {
+			// shoot logic
+			//Debug.Log("Shoot!");
 			entity.Shoot();
+		} else if (Input.GetKey (shootKey)) {
+			//Debug.Log("If i have an MGun, continuously shoot!");
+			Bill bill = entity as Bill; 
+			if(bill.gun.GetType().ToString() == "MGun"){
+				entity.Shoot();
+			}
 		}
 
 		entity.dir = dir;

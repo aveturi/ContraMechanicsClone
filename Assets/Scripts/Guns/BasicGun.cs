@@ -3,11 +3,13 @@ using System.Collections;
 
 public class BasicGun : Gun {
 
+	private KeyCode		shootKey = KeyCode.Z;
+	
 	public BasicGun (ContraEntity entity) {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;
 		bulletCount = 0;
-		timeBetweenSteps = 2f;
+		timeBetweenSteps = 0.8f;
 		numMaxBullets = 4;
 	}
 
@@ -40,13 +42,14 @@ public class BasicGun : Gun {
 	private void PerformShoot() {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 
-		Vector3 pos =entity.transform.position;
-		pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
-		
+		Vector3 pos = entity.transform.position;
+		// pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
+
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.owner = entity;
+		b.speed = 10f;
 //		Debug.Log ("The owner is " + b.owner);
 		b.SetVelocity(entity.dir);
 	}

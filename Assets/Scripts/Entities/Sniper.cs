@@ -2,9 +2,7 @@
 using System.Collections;
 
 public class Sniper : ContraEntity {
-	protected float 	xRange;
-	protected float 	screenWidth;
-	protected bool    	activated = false;
+	
 	public	bool 		isWaterSniper = false;
 	protected float		lastStep;
 	protected int		bulletCount = 0;
@@ -14,17 +12,16 @@ public class Sniper : ContraEntity {
 	protected virtual void Start () {
 		controller = new SniperController (this);
 
-		// set xRange so that Sniper only shoots once Bill can see it
-		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
-		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
-		xRange = screenWidth/2;
-		
+
 	}
 
 	protected float t_lastStep = 0;
 	protected float t_timeBetweenSteps = 0.5f;
 
 	protected virtual void Update(){
+
+
+
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
 		}
@@ -47,14 +44,10 @@ public class Sniper : ContraEntity {
 	protected virtual bool CanShoot(){
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
 		
-		var xDist = Mathf.Abs(Mathf.Abs(bill.transform.position.x) - Mathf.Abs(this.transform.position.x));
+		var xDist = Mathf.Abs(bill.transform.position.x - this.transform.position.x);
 
-		if (xDist < xRange ) {
-			
-			if(!activated){
-				activated = true;
-				xRange = screenWidth;
-			}
+		if (this.onCamera()) {
+
 			
 			if (bulletCount < numMaxBullets) {
 				return true;
@@ -79,14 +72,13 @@ public class Sniper : ContraEntity {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 		
 		Vector3 pos = transform.position;
-		pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
+		// pos.x += ((transform.localScale.x/2 + bulletDeltaSpace) * (leftOrRight));
 		// pos.y += ((transform.localScale.y/2 + bulletDeltaSpace)  * (upOrDown)); 
 		// Not needed since bullets are always instantiated from the side, right?
 
 		bullet.transform.position = pos;
 		
 		Bullet b = bullet.GetComponent<Bullet>();
-		b.speed *= 0.5f;
 		b.owner = this;
 		b.SetVelocity(dir);
 		bulletCount++;
@@ -94,5 +86,14 @@ public class Sniper : ContraEntity {
 	
 	public override void Damage(float damageTaken = 0) {
 		Destroy (this.gameObject);
+	}
+
+	public bool onCamera(){
+		
+		// set xRange so that Sniper only shoots once Bill can see it
+		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
+		var leftPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (0f,0f));
+		var rightPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (1f,1f));
+		return (this.transform.position.x > leftPoint.x && this.transform.position.x < rightPoint.x);
 	}
 }

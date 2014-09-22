@@ -12,8 +12,8 @@ public class MGun : Gun {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;
 		bulletCount = 0;
-		timeBetweenSteps = 1f;
-		numMaxBullets = 6;
+		timeBetweenSteps = 0.5f;
+		numMaxBullets = 1;
 	}
 
 	public override void Shoot() {
@@ -46,7 +46,7 @@ public class MGun : Gun {
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 			
 		Vector3 pos =entity.transform.position;
-		pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
+		// pos.x += ((entity.transform.localScale.x/2 + entity.bulletDeltaSpace) * (entity.leftOrRight));
 		
 		bullet.transform.position = pos;
 		
