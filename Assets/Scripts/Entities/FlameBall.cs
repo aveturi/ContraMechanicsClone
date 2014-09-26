@@ -7,6 +7,7 @@ public class FlameBall : ContraEntity {
 	private float lastStep = 0;
 	private bool flameOn = false;
 	void Start () {
+		if(this.health == 0)
 		this.health = 10;
 	}
 	

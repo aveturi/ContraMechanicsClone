@@ -81,7 +81,7 @@ public class Sniper : ContraEntity {
 		Destroy (this.gameObject);
 	}
 
-	public bool onCamera(){
+	public virtual bool onCamera(){
 		
 		// set xRange so that Sniper only shoots once Bill can see it
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");

@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 public class FootSoldierSpawner : MonoBehaviour {
 
+	public int max = 10;
+	private int spawned = 0;
 	GameObject footSoldier;
-	public GameObject	marker;
+	//public GameObject	marker;
 	GameObject	bill;
-	public float prob = 0.4f; // Probability that a foot soldier will spawn
+	public float prob = 0.1f; // Probability that a foot soldier will spawn
 	bool enabled = true;
 	protected float t_lastStep = 0;
-	protected float t_timeBetweenSteps = 2f;
+	protected float t_timeBetweenSteps = 0.5f;
 
 	void Start() {
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
@@ -22,10 +24,10 @@ public class FootSoldierSpawner : MonoBehaviour {
 			return;
 		}
 
-		if (bill.transform.position.x >= marker.transform.position.x) {
+		/*if (bill.transform.position.x >= marker.transform.position.x) {
 			enabled = false;
 
-		}
+		}*/
 
 		if (t_lastStep == 0) {
 			t_lastStep = Time.time;
@@ -43,6 +45,11 @@ public class FootSoldierSpawner : MonoBehaviour {
 	}
 
 	void SpawnFootSoldier(){
+
+		if (spawned >= max) {
+			return;
+		}
+
 		// pick a side of the screen
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 
@@ -94,5 +101,7 @@ public class FootSoldierSpawner : MonoBehaviour {
 		pos.y = chosenPlatform.collider2D.bounds.max.y + transform.localScale.y / 2;
 		pos.x = pointA.x;
 		footSoldier.transform.position = pos;
+
+		spawned++;
 	}
 }

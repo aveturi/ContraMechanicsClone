@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class Lava : Boundary {
-
-	private float 	lavaSpeed = 1.0f;
+	
+	private float 	lavaSpeed = 0.6f;
 	private float 	startingYDelta = 1.5f;
 	private bool	canMove;
-	public float 	waitTime = 1f;
+	public float 	waitTime = 1.5f;
 
 	void Start() {
 		ResetPosition ();

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bill : ContraEntity {
 	
-	public float 		leftBoundary = 1.2f;
+	public float 		leftBoundary = 0.2f;//TODO: change based on level
 	public bool 		isFallingThrough;
 	public bool 		isCrouched;
 	public bool 		inWater;
@@ -174,7 +174,12 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
-				if ((transform.position.y) < other.bounds.max.y) {
+
+				if( renderer.bounds.min.x > other.bounds.max.x || renderer.bounds.max.x < other.bounds.min.x){
+				return;
+				}
+
+				if ((transform.position.y) < other.bounds.max.y ) {
 					if (!inWater) return;
 			}
 			onFloor = true;
