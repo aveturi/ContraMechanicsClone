@@ -259,7 +259,7 @@ public class Bill : ContraEntity {
 		else {
 			Debug.Log("Game Over");
 			Destroy	(gameObject);
-			Application.LoadLevel("Level_1");
+			Application.LoadLevel(Application.loadedLevel);
 		}
 	}
 
