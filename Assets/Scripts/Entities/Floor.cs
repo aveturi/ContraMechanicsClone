@@ -12,7 +12,7 @@ public class Floor : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		var lavaTop = lava.renderer.bounds.max.y;
-		// collider2D.enabled = (lavaTop < collider2D.bounds.min.y);
+		collider2D.enabled = (lavaTop < collider2D.bounds.min.y);
 	}
 
 	void onTriggerEnter2D(Collider2D other){

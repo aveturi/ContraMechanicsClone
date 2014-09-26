@@ -33,7 +33,10 @@ public class MovingFloorSegment : MonoBehaviour {
 		
 		transform.position = pos;
 	}
-	
+
+	public void BillIsDead() {
+		billOnPlatform = false;
+	}
 
 	void OnTriggerExit2D (Collider2D other)
 	{
@@ -46,8 +49,6 @@ public class MovingFloorSegment : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other){
 		if (other.tag == "BillRizer" && other.renderer.bounds.min.y >= this.renderer.bounds.max.y && !billOnPlatform) {
 			billOnPlatform = true;
-		} else {
-			billOnPlatform = false;
 		}
 	}
 }

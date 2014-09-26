@@ -253,6 +253,12 @@ public class Bill : ContraEntity {
 			return;
 		}
 
+		MovingFloorSegment[] movingFloors = FindObjectsOfType(typeof(MovingFloorSegment)) as MovingFloorSegment[];
+		foreach (MovingFloorSegment floor in movingFloors) {
+			MovingFloorSegment floorScript = (MovingFloorSegment) floor.GetComponent(typeof(MovingFloorSegment));
+			floorScript.BillIsDead ();
+		}
+
 		//Debug.Log("Dead!!");
 		// Do death animation
 		health--;
