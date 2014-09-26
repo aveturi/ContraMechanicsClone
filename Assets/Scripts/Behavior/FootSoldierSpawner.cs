@@ -75,7 +75,7 @@ public class FootSoldierSpawner : MonoBehaviour {
 		List<GameObject> possibleFloors = new List<GameObject>();
 	
 		foreach(var overlapCollider in overlapObjects){
-			if(overlapCollider.tag == "Floor")
+			if(overlapCollider.tag == "Floor" && overlapCollider.enabled)
 				possibleFloors.Add(overlapCollider.gameObject);
 		}
 

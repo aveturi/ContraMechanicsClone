@@ -25,7 +25,7 @@ public class Bill : ContraEntity {
 		this.gun = new BasicGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
-		health = 3;
+		health = 30;
 		if (invincibleMode) health = 1000;
 		Respawn ();
 	}
@@ -151,7 +151,7 @@ public class Bill : ContraEntity {
 		bool haveSeenMyFloor = false;
 
 		foreach (var other in others) {
-			if (other.tag == "Floor") {
+			if (other.tag == "Floor" && other.enabled) {
 				if (haveSeenMyFloor) {
 					return true;
 				}
@@ -224,6 +224,7 @@ public class Bill : ContraEntity {
 
 	private void Respawn() {
 		vel = Vector2.zero;
+		onFloor = false;
 
 		if (inWater) {
 			ScaleUp();
@@ -232,7 +233,8 @@ public class Bill : ContraEntity {
 
 		transform.position = spawner.transform.position;
 		leftOrRight = 1;
-		invincibleFlag = true;
+		// invincibleFlag = true;
+		invincibleFlag = false;
 		Invoke("SetVincible", invincibleSeconds);
 		gun = new BasicGun (this);
 	}
