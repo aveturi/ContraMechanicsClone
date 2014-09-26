@@ -4,7 +4,6 @@ using System.Collections;
 public class VerticalCameraTracking : MonoBehaviour {
 	
 	private GameObject	player;
-	private float 		backTrackDelta = 10f;
 	// Use this for initialization
 	void Start () {
 		player = GameObject.FindGameObjectWithTag ("BillRizer");
@@ -22,6 +21,15 @@ public class VerticalCameraTracking : MonoBehaviour {
 		if (pos.y >= transform.position.y) {
 			transform.position = pos;
 		}
+	}
+
+	public void Center() {
+		if (player == null) {
+			return;
+		}
+		Vector3 pos = transform.position;
+		pos.y = player.transform.position.y;
+		transform.position = pos;
 	}
 	
 }

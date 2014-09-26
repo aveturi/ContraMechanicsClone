@@ -7,6 +7,7 @@ public class MovingFloorSegment : MonoBehaviour {
 	public float amplitude = 1f;
 	public float frequency = 1f;
 	public bool billOnPlatform = false;
+
 	public int initialDirection = 1; //1 is right, -1 is left
 	void Awake(){
 		baseX = transform.position.x;
@@ -33,7 +34,7 @@ public class MovingFloorSegment : MonoBehaviour {
 		transform.position = pos;
 	}
 	
-	
+
 	void OnTriggerExit2D (Collider2D other)
 	{
 		Debug.Log ("TriggerExit");
@@ -45,8 +46,8 @@ public class MovingFloorSegment : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other){
 		if (other.tag == "BillRizer" && other.renderer.bounds.min.y >= this.renderer.bounds.max.y && !billOnPlatform) {
 			billOnPlatform = true;
-		} /*else {
+		} else {
 			billOnPlatform = false;
-		}*/
+		}
 	}
 }

@@ -222,7 +222,7 @@ public class Bill : ContraEntity {
 		}
 	}
 
-	private void Respawn() {
+	protected virtual void Respawn() {
 		vel = Vector2.zero;
 		onFloor = false;
 
@@ -232,6 +232,7 @@ public class Bill : ContraEntity {
 		}
 
 		transform.position = spawner.transform.position;
+
 		leftOrRight = 1;
 		// invincibleFlag = true;
 		invincibleFlag = false;
