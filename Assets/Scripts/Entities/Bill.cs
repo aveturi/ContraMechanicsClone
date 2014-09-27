@@ -17,7 +17,7 @@ public class Bill : ContraEntity {
 	private bool		invincibleFlag = false;
 	private int			invincibleSeconds = 2;	
 	public Gun 			gun;
-
+	public bool 		isOnWaterFloor;
 	public	bool		invincibleMode = false;
 
 	// Use this for initialization
@@ -140,6 +140,9 @@ public class Bill : ContraEntity {
 	}
 
 	private bool canFallThrough() {
+		if (isOnWaterFloor) {
+			return false;	
+		}
 		Vector2 pointA = (Vector2) renderer.bounds.min;
 
 		Vector2 pointB = (Vector2) renderer.bounds.max;
@@ -174,14 +177,21 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
+				
+			GameObject floor = other.gameObject;
+			Floor floorScript = (Floor) floor.GetComponent(typeof(Floor));
+			isOnWaterFloor = floorScript.isWaterFloor;
 
 				if( renderer.bounds.min.x > other.bounds.max.x || renderer.bounds.max.x < other.bounds.min.x){
-				return;
+				if (isOnWaterFloor == false) {
+						return;
+					}
 				}
 
 				if ((transform.position.y) < other.bounds.max.y ) {
 					if (!inWater) return;
 			}
+
 			onFloor = true;
 			isFallingThrough = false;
 			if (inWater) {
