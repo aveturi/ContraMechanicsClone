@@ -19,7 +19,7 @@ public class Bill : ContraEntity {
 	public Gun 			gun;
 	public bool 		isOnWaterFloor;
 	public	bool		invincibleMode = false;
-
+	public bool 		isJumping = false;
 	// Use this for initialization
 	void Start () {
 		this.gun = new BasicGun(this);
@@ -88,6 +88,8 @@ public class Bill : ContraEntity {
 	private void PerformJump() {
 		onFloor = false;
 		onBridge = false;
+		isJumping = true;
+		ScaleDown ();
 		Vector2 jumpForce = new Vector2(0f, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
@@ -194,8 +196,9 @@ public class Bill : ContraEntity {
 
 			onFloor = true;
 			isFallingThrough = false;
-			if (inWater) {
+			if (inWater || isJumping) {
 				ScaleUp();
+				isJumping = false;
 				inWater = false;
 			}
 		
@@ -210,7 +213,11 @@ public class Bill : ContraEntity {
 			isFallingThrough = false;
 			isCrouched = false;
 
-			ScaleDown();
+			if (!isJumping) {
+				isJumping = false;
+				ScaleDown();
+			}
+
 
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
@@ -220,6 +227,10 @@ public class Bill : ContraEntity {
 			this.Damage ();
 		} else if (other.tag == "Bridge" && transform.position.y + transform.localScale.y/2 >= other.bounds.max.y) {
 			this.onBridge = true;
+			if (isJumping) {
+				ScaleUp();
+				isJumping = false;
+			}
 		}
 	}
 
