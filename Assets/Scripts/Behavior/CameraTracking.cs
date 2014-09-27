@@ -14,7 +14,7 @@ public class CameraTracking : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		screenWidth = (this.camera.orthographicSize * 2f * this.camera.aspect);
-		rightEdge = boundary.renderer.bounds.max.x;
+		rightEdge = boundary.renderer.bounds.max.x - 3;
 	}
 	
 	// Update is called once per frame

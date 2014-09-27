@@ -7,6 +7,9 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 	public string gunType = "SGun";
 	public bool isOpen = false;
 
+	public Material openMaterial;
+	public Material closedMaterial;
+
 	public float 	timeBetweenSteps = 2f;
 	public float 	lastStep = 0;
 
@@ -49,6 +52,13 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 			}
 		}
 
-		renderer.enabled = isOpen;
+		//renderer.enabled = isOpen;
+
+		if (isOpen) {
+	
+						renderer.material = openMaterial;
+				} else {
+			renderer.material = closedMaterial;
+				}
 	}
 }
