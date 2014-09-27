@@ -97,24 +97,26 @@ public class Bill : ContraEntity {
 
 	public override void Crouch() {
 		if (!isCrouched && !isFallingThrough && (onFloor || inWater)) {
-			ScaleDown();
+			ScaleDown(true);
 			isCrouched = true;
 		}
 	}
 
 	public override void Uncrouch() {
-
 		if (isCrouched) {
-			ScaleUp();
+			ScaleUp(true);
 			isCrouched = false;
 		}
 	}
 
-	private void ScaleUp() {
+	private void ScaleUp(bool unstretch = false) {
 		var t_y = renderer.bounds.min.y;
 
 		Vector3 scale = transform.localScale;
 		scale.y = scale.y * 2 ;
+		if (unstretch && !inWater) {
+			scale.x = scale.x / 3;
+		}
 		transform.localScale = scale;
 		
 		var pos = transform.position;
@@ -122,11 +124,14 @@ public class Bill : ContraEntity {
 		transform.position = pos;
 	}
 
-	private void ScaleDown() {
+	private void ScaleDown(bool stretch = false) {
 		var t_y = renderer.bounds.min.y;
 		
 		Vector3 scale = transform.localScale;
 		scale.y = scale.y / 2 ;
+		if (stretch && !inWater) {
+			scale.x = scale.x * 3;
+		}
 		transform.localScale = scale;
 		
 		var pos = transform.position;
