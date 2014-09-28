@@ -21,6 +21,11 @@ public class VerticalCameraTracking : MonoBehaviour {
 		if (pos.y >= transform.position.y) {
 			transform.position = pos;
 		}
+		var bottomLeft = this.camera.ViewportToWorldPoint (new Vector2(0, 0));
+		if (player.renderer.bounds.min.y <= bottomLeft.y) {
+			Bill bill = player.GetComponent<Bill>();
+			bill.Damage();
+		}
 	}
 
 	public void Center() {

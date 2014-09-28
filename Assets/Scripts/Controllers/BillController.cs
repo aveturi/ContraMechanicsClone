@@ -18,7 +18,6 @@ public class BillController : Controller {
 		float horizontalAxis = Input.GetAxisRaw ("Horizontal");
 		float verticalAxis = Input.GetAxisRaw ("Vertical");
 		Vector2	dir = new Vector2(entity.leftOrRight, 0);
-
 		if (horizontalAxis > 0) {
 			entity.MoveRight();
 			
@@ -75,6 +74,7 @@ public class BillController : Controller {
 		if (bill.isCrouched) {
 			dir.y = 0;		
 		}
+		Debug.Log ("Dir for Bill is " + entity.dir);
 		entity.dir = dir;
 	}
 }

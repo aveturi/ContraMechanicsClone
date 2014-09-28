@@ -5,9 +5,9 @@ public class PowerUp : MonoBehaviour{
 
 	public bool 		onFloor;
 	public Vector2		vel = Vector2.zero;
-	public float		gravityVal = -18f;
+	private float		gravityVal = -10f;
 	public string gunType = null;
-	private float		jumpVal = 15f;
+	private float		jumpVal = 10f;
 	private float		xSpeed = 2f;
 
 	// Use this for initialization
