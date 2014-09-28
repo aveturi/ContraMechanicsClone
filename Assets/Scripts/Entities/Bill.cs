@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bill : ContraEntity {
 	
-	public float 		leftBoundary = 0.2f;//TODO: change based on level
+	public float 		leftBoundary = 1.2f;//TODO: change based on level
 	public bool 		isFallingThrough;
 	public bool 		isCrouched;
 	public bool 		inWater;
@@ -36,6 +36,10 @@ public class Bill : ContraEntity {
 
 		startingHeight = renderer.bounds.size.y;
 		startingWidth = renderer.bounds.size.x;
+
+		if (Application.loadedLevelName == "Level_2") {
+			leftBoundary = 0.6f;
+		}
 
 		Respawn ();
 	}
