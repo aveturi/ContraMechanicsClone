@@ -14,13 +14,12 @@ public class Bill : ContraEntity {
 	public Vector2		vel = Vector2.zero;
 	public GameObject 	spawner;
 	public float		gravityVal = -18f;
-	private bool		invincibleFlag = false;
+	public bool			invincibleFlag = false;
 	private int			invincibleSeconds = 2;	
 	public Gun 			gun;
 	public bool 		isOnWaterFloor;
-	public	bool		invincibleMode = false;
+	public	bool		godMode = false;
 	public bool 		isJumping = false;
-
 	public float 		startingHeight;
 	public float 		startingWidth;
 	public bool 		stopMoving = false;
@@ -29,11 +28,11 @@ public class Bill : ContraEntity {
 
 	// Use this for initialization
 	void Start () {
-		this.gun = new BasicGun(this);
+		this.gun = new LGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 30;
-		if (invincibleMode) health = 1000;
+		if (godMode) health = 1000;
 
 		startingHeight = renderer.bounds.size.y;
 		startingWidth = renderer.bounds.size.x;
@@ -71,6 +70,7 @@ public class Bill : ContraEntity {
 
 	public override void MoveLeft() {
 		if (!isFallingThrough && !isCrouched && !stopMoving) {
+			leftOrRight = -1;
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
 			
@@ -85,6 +85,7 @@ public class Bill : ContraEntity {
 
 	public override void MoveRight() {
 		if (!isFallingThrough && !isCrouched && !stopMoving) {
+			leftOrRight = 1;
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
 			transform.position = pos;
@@ -354,8 +355,7 @@ public class Bill : ContraEntity {
 		transform.position = spawner.transform.position;
 
 		leftOrRight = 1;
-		// invincibleFlag = true;
-		invincibleFlag = false;
+		invincibleFlag = true;
 		Invoke("SetVincible", invincibleSeconds);
 		gun = new BasicGun (this);
 	}
@@ -365,11 +365,12 @@ public class Bill : ContraEntity {
 	}
 
 
-	public override void Damage(float damageTaken = 0) {
+	public override void Damage(float damageTaken = 0) { // -1 means fell off screen
 
 		bool isUnderWater = (inWater && isCrouched);
+		bool fellOffInGodMode = (damageTaken == -1) && (godMode || invincibleFlag);
 
-		if (invincibleFlag || isUnderWater || invincibleMode) {
+		if (isUnderWater || (invincibleFlag && !fellOffInGodMode)) {
 			return;
 		}
 
@@ -381,7 +382,14 @@ public class Bill : ContraEntity {
 
 		//Debug.Log("Dead!!");
 		// Do death animation
-		health--;
+		if (fellOffInGodMode) {
+			Respawn ();
+			return;
+		}
+		else {
+			health--;
+		}
+
 		if (health > 0) {
 			Respawn ();
 		}
@@ -394,13 +402,15 @@ public class Bill : ContraEntity {
 
 	public void PowerUp(string powerUpType){
 		if (powerUpType == "SGun") {
-			this.gun = new SGun (this);
+				this.gun = new SGun (this);
 		} else if (powerUpType == "MGun") {
-			this.gun = new MGun(this);
+				this.gun = new MGun (this);
 		} else if (powerUpType == "LGun") {
-			this.gun = new MGun(this);
+				this.gun = new LGun (this);
 		} else if (powerUpType == "FGun") {
-			this.gun = new MGun(this);
+				this.gun = new FGun (this);
+		} else if (powerUpType == "R") {
+			this.gun.timeBetweenSteps = this.gun.timeBetweenSteps*0.7f;
 		}
 	}
 }

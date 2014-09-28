@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class BillController : Controller {
@@ -21,11 +21,9 @@ public class BillController : Controller {
 
 		if (horizontalAxis > 0) {
 			entity.MoveRight();
-			entity.leftOrRight = 1;
 			
 		} else if (horizontalAxis < 0) {
 			entity.MoveLeft();
-			entity.leftOrRight = -1;
 		}
 
 		dir.Set (entity.leftOrRight, 0);
@@ -65,16 +63,18 @@ public class BillController : Controller {
 			entity.Shoot();
 		} else if (Input.GetKey (shootKey)) {
 			//Debug.Log("If i have an MGun, continuously shoot!");
-			Bill bill = entity as Bill; 
 			if(bill.gun.GetType().ToString() == "MGun"){
 				entity.Shoot();
 			}
 		}
 
 		if (Input.GetKeyDown (invincibleKey)) {
-			bill.invincibleMode = !bill.invincibleMode;	
+			bill.godMode = !bill.godMode;	
 		}
 
+		if (bill.isCrouched) {
+			dir.y = 0;		
+		}
 		entity.dir = dir;
 	}
 }

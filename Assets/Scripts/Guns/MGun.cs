@@ -12,7 +12,7 @@ public class MGun : Gun {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;
 		bulletCount = 0;
-		timeBetweenSteps = 0.5f;
+		timeBetweenSteps = 0.3f;
 		numMaxBullets = 1;
 	}
 

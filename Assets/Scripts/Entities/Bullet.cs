@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class Bullet : MonoBehaviour {
 
-	private 		Vector2 velocity = Vector2.zero;
+	protected 		Vector2 velocity = Vector2.zero;
 	public 			float speed = 4f;
-	private 		List<string> safeTags;
+	protected 		List<string> safeTags;
 	protected 		float damageVal = 1f;
 	public			string ownerTag = "";
 	public			ContraEntity owner;
@@ -53,7 +53,8 @@ public class Bullet : MonoBehaviour {
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		var leftPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (0f,0f));
 		var rightPoint = mainCamera.camera.ViewportToWorldPoint (new Vector2 (1f,1f));
-		return (this.transform.position.x > leftPoint.x && this.transform.position.x < rightPoint.x);
+		return (this.transform.position.x > leftPoint.x && this.transform.position.x < rightPoint.x &&
+		        this.transform.position.y > leftPoint.y && this.transform.position.y < rightPoint.y);
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {

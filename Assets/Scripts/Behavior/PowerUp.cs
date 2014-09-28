@@ -6,7 +6,6 @@ public class PowerUp : MonoBehaviour{
 	public bool 		onFloor;
 	public Vector2		vel = Vector2.zero;
 	public float		gravityVal = -18f;
-	public float		newFiringRate = 0.7f;
 	public string gunType = null;
 	private float		jumpVal = 15f;
 	private float		xSpeed = 2f;
@@ -44,9 +43,6 @@ public class PowerUp : MonoBehaviour{
 			Bill bill = other.gameObject.GetComponent<Bill>();
 			if(this.gunType != null){
 				bill.PowerUp(gunType);
-			} else {
-				// The only other power-up in level 1 is the Rate powerup. Hardcoded for now.
-				bill.gun.timeBetweenSteps = newFiringRate * bill.gun.timeBetweenSteps;
 			}
 
 			Destroy(this.gameObject);
