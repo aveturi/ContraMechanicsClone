@@ -20,9 +20,11 @@ public class Bill : ContraEntity {
 	public bool 		isOnWaterFloor;
 	public	bool		invincibleMode = false;
 	public bool 		isJumping = false;
+
+
 	// Use this for initialization
 	void Start () {
-		this.gun = new BasicGun(this);
+		this.gun = new LGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
 		health = 30;
@@ -305,13 +307,15 @@ public class Bill : ContraEntity {
 
 	public void PowerUp(string powerUpType){
 		if (powerUpType == "SGun") {
-			this.gun = new SGun (this);
+				this.gun = new SGun (this);
 		} else if (powerUpType == "MGun") {
-			this.gun = new MGun(this);
+				this.gun = new MGun (this);
 		} else if (powerUpType == "LGun") {
-			this.gun = new MGun(this);
+				this.gun = new LGun (this);
 		} else if (powerUpType == "FGun") {
-			this.gun = new MGun(this);
+				this.gun = new FGun (this);
+		} else if (powerUpType == "R") {
+			this.gun.timeBetweenSteps = this.gun.timeBetweenSteps*0.7f;
 		}
 	}
 }

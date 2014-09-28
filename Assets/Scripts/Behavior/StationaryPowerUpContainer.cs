@@ -4,7 +4,7 @@ using System.Collections;
 public class StationaryPowerUpContainer : MonoBehaviour {
 
 	public GameObject powerup; 
-	public string gunType = "SGun";
+	public string gunType ;
 	public bool isOpen = false;
 
 	public Material openMaterial;
@@ -15,7 +15,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		powerup = Resources.Load("PowerUp") as GameObject;
+		powerup = Resources.Load(this.gunType+"PowerUp") as GameObject;
 	}
 	
 	void OnTriggerEnter2D (Collider2D other)
@@ -26,7 +26,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 			if(bullet.ownerTag == "BillRizer"){
 
 				powerup.transform.position = this.transform.position;
-				PowerUp p = powerup.GetComponent<PowerUp>();
+				PowerUp p = powerup.transform.FindChild("PowerUp").gameObject.GetComponent<PowerUp>();
 				p.gunType = this.gunType;
 
 				Instantiate(powerup);

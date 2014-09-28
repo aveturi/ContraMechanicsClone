@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class Bullet : MonoBehaviour {
 
-	private 		Vector2 velocity = Vector2.zero;
+	protected 		Vector2 velocity = Vector2.zero;
 	public 			float speed = 4f;
-	private 		List<string> safeTags;
+	protected 		List<string> safeTags;
 	protected 		float damageVal = 1f;
 	public			string ownerTag = "";
 	public			ContraEntity owner;

@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FGun : MonoBehaviour {
+public class FGun : BasicGun {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	public FGun (ContraEntity entity) : base(entity) {
+		this.entity = entity;
+		bulletPrefab = Resources.Load ("FireballBullet") as GameObject;
+		bulletCount = 0;
+		timeBetweenSteps = 0.9f;
+		numMaxBullets = 4;
 	}
 }
