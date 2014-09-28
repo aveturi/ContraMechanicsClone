@@ -58,7 +58,28 @@ public class Sniper : ContraEntity {
 			return false;
 		}
 	}
-	
+
+//	void OnTriggerEnter2D (Collider2D other)
+//	{
+//		if (other.tag == "Floor") {
+//			
+//			if( (transform.position.y) < other.bounds.max.y){
+//				return;
+//			}
+//			onFloor = true;
+//			
+//			Vector2 pos = transform.position;
+//			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
+//			
+//			transform.position = pos;
+//			
+//		} else if (other.tag == "BillRizer") {
+//			Bill bill = other.gameObject.GetComponent<Bill>(); 
+//			bill.Damage();
+//		}
+//		
+//	}
+
 	protected virtual void PerformShoot() {
 		//Debug.Log ("Sniper shoot!");
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;

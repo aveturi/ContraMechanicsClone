@@ -276,7 +276,7 @@ public class Bill : ContraEntity {
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.tag == "Floor") {
+		if (other.tag == "Floor" || other.tag == "Bridge") {
 			isOnWaterFloor = false;
 
 			GameObject floor = other.gameObject;
@@ -332,7 +332,7 @@ public class Bill : ContraEntity {
 	}
 
 	void OnTriggerExit2D (Collider2D other){
-		if (other.tag == "Floor") {
+		if (other.tag == "Floor" || other.tag == "Bridge") {
 			onFloor = onBridge || false;
 			isOnWaterFloor = false;
 		}

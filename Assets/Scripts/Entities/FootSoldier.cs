@@ -8,9 +8,9 @@ public class FootSoldier : ContraEntity {
 	private float 		xSpeed = 1f;
 	private float 		jumpVal = 7.5f;
 	private int			billDirection;
-
-
-
+	private bool 		onStartOfBridge;
+	public int 			touchingBridges = 0;
+	private bool 		onBridge = false;
 	void Start () {
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
 		billDirection = (bill.transform.position.x < this.transform.position.x) ? -1 : 1; 
@@ -41,7 +41,7 @@ public class FootSoldier : ContraEntity {
 		transform.position = (Vector2)transform.position + vel * Time.fixedDeltaTime;
 	}
 	
-	public override void Jump() {
+	public void Jump() {
 		if (onFloor) {
 			onFloor = false; //you're going to leave the floor either way
 			Vector2 jumpForce = new Vector2(0f, jumpVal);
@@ -53,13 +53,14 @@ public class FootSoldier : ContraEntity {
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.tag == "Floor") {
+		if (other.tag == "Floor" || other.tag == "Bridge") {
 			
 			if( (transform.position.y) < other.bounds.max.y){
 				return;
 			}
 			onFloor = true;
-			
+			if (other.tag == "Bridge") touchingBridges++;
+
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 			
@@ -71,10 +72,15 @@ public class FootSoldier : ContraEntity {
 		}
 		
 	}
-	
+
 	void OnTriggerExit2D (Collider2D other){
 		if (other.tag == "Floor") {
 			Jump();
+		} else if (other.tag == "Bridge") {
+			touchingBridges--;
+			if (touchingBridges == 0) {
+				onFloor = false;
+			}
 		} else if (other.tag == "Water") {
 			this.Damage();
 		}
