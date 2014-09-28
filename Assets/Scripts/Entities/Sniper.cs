@@ -38,7 +38,7 @@ public class Sniper : ContraEntity {
 
 	protected virtual bool CanShoot(){
 		var bill = GameObject.FindGameObjectWithTag ("BillRizer");
-		if (this.onCamera()) {
+		if (bill != null && this.onCamera()) {
 
 			
 			if (bulletCount < numMaxBullets) {

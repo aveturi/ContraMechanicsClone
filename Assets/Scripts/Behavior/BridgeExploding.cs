@@ -2,32 +2,33 @@
 using System.Collections;
 
 public class BridgeExploding : MonoBehaviour {
+	
+	Bill bill;
 
-	bool timerStart = false;
-	double startTime;
-	public double delta = 0f;
-	void OnTriggerEnter2D (Collider2D other)
-	{
-		if (other.tag == "BillRizer") {
+	void Start() {
+		GameObject billObject = GameObject.FindGameObjectWithTag("BillRizer");
+		bill = billObject.GetComponent<Bill>();
+	}
 
-			//TODO: do destruction graphics
-			if(!timerStart){
-				timerStart = true;
-				startTime = Time.time;
-			}
+	void Update() {
+		if (shouldExplode ()) {
+			StartCoroutine(Explode());
 		}
 	}
 
-	void Update(){
-		if (timerStart) {
-			if(Time.time > (this.startTime+delta)){
-				Debug.Log(this.gameObject.name +" has been destroyed");
-				GameObject billObject = GameObject.FindGameObjectWithTag("BillRizer");
-				Bill bill = billObject.GetComponent<Bill>();
-				bill.onBridge = false;
-				Destroy(this.gameObject);
-			}
-		}
+	bool shouldExplode() {
+		float min_x = this.renderer.bounds.min.x;
+		return min_x < bill.renderer.bounds.max.x;
 	}
+
+	IEnumerator Explode() {
+		yield return new WaitForSeconds(0.6f);
+		ExplodeHelper ();
+	}
+
+	void ExplodeHelper() {
+		Destroy(this.gameObject);
+	}
+
 	
 }

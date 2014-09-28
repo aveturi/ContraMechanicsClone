@@ -8,7 +8,7 @@ public class Bill : ContraEntity {
 	public bool 		isCrouched;
 	public bool 		inWater;
 	public bool 		onFloor;
-	public bool         onBridge;
+	public bool 		onBridge;
 	public float 		xSpeed = 0.05f;
 	public float 		jumpVal = 10.5f;
 	public Vector2		vel = Vector2.zero;
@@ -20,6 +20,13 @@ public class Bill : ContraEntity {
 	public bool 		isOnWaterFloor;
 	public	bool		invincibleMode = false;
 	public bool 		isJumping = false;
+
+	public float 		startingHeight;
+	public float 		startingWidth;
+	public bool 		stopMoving = false;
+	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null};
+	public BillState 	currentState = BillState.Null;
+
 	// Use this for initialization
 	void Start () {
 		this.gun = new BasicGun(this);
@@ -27,17 +34,29 @@ public class Bill : ContraEntity {
 		leftOrRight = 1;
 		health = 30;
 		if (invincibleMode) health = 1000;
+
+		startingHeight = renderer.bounds.size.y;
+		startingWidth = renderer.bounds.size.x;
+
 		Respawn ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		controller.Run ();
+		// PositionGun ();
 	}
+
+//	public void PositionGun() {
+//		dir.Normalize ();
+//		GameObject gun = GameObject.FindGameObjectWithTag ("Gun");
+//		var a = Quaternion.LookRotation(dir, Vector3.up);
+//		gun.transform.rotation = a;
+//	}
 
 	// Update is called once per frame
 	void FixedUpdate () {	
-		if (!onFloor && !inWater && !onBridge ) {
+		if (!onFloor && !inWater) {
 			// Apply gravity and acc to vel
 			vel += new Vector2(0,gravityVal) * Time.fixedDeltaTime;
 			
@@ -51,7 +70,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void MoveLeft() {
-		if (!isFallingThrough && !isCrouched) {
+		if (!isFallingThrough && !isCrouched && !stopMoving) {
 			Vector2 pos = transform.position;
 			pos.x -= xSpeed;
 			
@@ -65,7 +84,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void MoveRight() {
-		if (!isFallingThrough && !isCrouched) {
+		if (!isFallingThrough && !isCrouched && !stopMoving) {
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
 			transform.position = pos;
@@ -73,7 +92,7 @@ public class Bill : ContraEntity {
 	}
 
 	public override void Jump() {
-		if (!inWater && (onFloor || onBridge)) {
+		if (!inWater && (onFloor)) {
 			if (isCrouched) {
 				if (canFallThrough()) {
 					FallThrough();
@@ -86,10 +105,8 @@ public class Bill : ContraEntity {
 	}
 
 	private void PerformJump() {
-		onFloor = false;
-		onBridge = false;
-		isJumping = true;
-		ScaleDown ();
+		// ScaleDown ();
+		SetState (BillState.Jumping);
 		Vector2 jumpForce = new Vector2(0f, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
@@ -97,52 +114,125 @@ public class Bill : ContraEntity {
 
 	public override void Crouch() {
 		if (!isCrouched && !isFallingThrough && (onFloor || inWater)) {
-			ScaleDown(true);
+			if (inWater) {
+				SetState (BillState.CrouchedInWater);
+			}
+			else {
+				SetState (BillState.CrouchedOnLand);
+			}
+
 			isCrouched = true;
 		}
 	}
 
 	public override void Uncrouch() {
 		if (isCrouched) {
-			ScaleUp(true);
+			if (inWater) {
+				SetState (BillState.InWater);
+			}
+			else {
+				SetState (BillState.Normal);
+			}
 			isCrouched = false;
 		}
 	}
 
-	private void ScaleUp(bool unstretch = false) {
-		var t_y = renderer.bounds.min.y;
+	private void SetState (BillState state) {
 
-		Vector3 scale = transform.localScale;
-		scale.y = scale.y * 2 ;
-		if (unstretch && !inWater) {
-			scale.x = scale.x / 3;
+		switch (state) {
+		case BillState.Normal:
+			onFloor = !isFallingThrough;
+			inWater = false;
+			isJumping = false;
+			break;
+		case BillState.CrouchedOnLand:
+			isCrouched = true;
+			break;
+		case BillState.CrouchedInWater:
+			isCrouched = true;
+			break;
+		case BillState.InWater:
+			inWater = true;
+			onFloor = false;
+			isFallingThrough = false;
+			isCrouched = false;
+
+
+			if (currentState != BillState.CrouchedInWater) {
+				stopMoving = true;
+				Invoke("StartMovingInWater", 0.5f);
+				SetSize (BillState.CrouchedInWater);
+			}
+			break;
+		case BillState.Jumping:
+			onFloor = false;
+			isJumping = true;
+			isCrouched = false;
+			break;
 		}
-		transform.localScale = scale;
-		
-		var pos = transform.position;
-		pos.y += (pos.y - t_y) ;
-		transform.position = pos;
+
+		if (!stopMoving) SetSize (state);
+		currentState = state;
 	}
 
-	private void ScaleDown(bool stretch = false) {
-		var t_y = renderer.bounds.min.y;
-		
-		Vector3 scale = transform.localScale;
-		scale.y = scale.y / 2 ;
-		if (stretch && !inWater) {
-			scale.x = scale.x * 3;
+	private void StartMoving() {
+		stopMoving = false;
+	}
+
+	private void StartMovingInWater() {
+		stopMoving = false;
+		SetSize (BillState.InWater);
+	}
+
+	private void SetSize(BillState state) {
+		float t_height = startingHeight;
+		float t_width = startingWidth;
+
+		switch (state) {
+			case BillState.Normal:
+				break;
+			case BillState.CrouchedOnLand:
+				t_height = startingHeight / 4f;
+				t_width = startingWidth * 2.8f;
+				break;
+			case BillState.CrouchedInWater:
+				t_height = startingHeight / 10f;
+				break;
+			case BillState.InWater:
+				t_height = startingHeight / 2f;
+				break;
+			case BillState.Jumping:
+				t_height = startingHeight / 2f;
+				break;
 		}
-		transform.localScale = scale;
-		
+
+		SetSizeHelper(t_height, t_width);
+	}
+
+	private void SetSizeHelper(float height, float width) {
+		float currentHeight = renderer.bounds.size.y;
+		float currentWidth = renderer.bounds.size.x;
+
+		Vector3 scale = transform.localScale;
 		var pos = transform.position;
-		pos.y -= (pos.y - t_y) / 2;
+
+		if (currentHeight != height) {
+			pos.y += (height - scale.y)/2;
+			scale.y = height;
+		}
+
+		if (currentWidth != width) {
+			scale.x = width;
+		}
+
+		transform.localScale = scale;
 		transform.position = pos;
 	}
+	
 
 	public override void FallThrough() {
 		isFallingThrough = true;
 		onFloor = false;
-		onBridge = false;
 		Uncrouch();
 	}
 
@@ -178,19 +268,22 @@ public class Bill : ContraEntity {
 	}
 	
 	public override void Shoot() {
-		gun.Shoot ();
+		if (!(inWater && isCrouched)) {
+			gun.Shoot ();
+		}
 	}
 
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor") {
-				
+			isOnWaterFloor = false;
+
 			GameObject floor = other.gameObject;
 			Floor floorScript = (Floor) floor.GetComponent(typeof(Floor));
 			isOnWaterFloor = floorScript.isWaterFloor;
 
-				if( renderer.bounds.min.x > other.bounds.max.x || renderer.bounds.max.x < other.bounds.min.x){
-				if (isOnWaterFloor == false) {
+				if(renderer.bounds.min.x > other.bounds.max.x || renderer.bounds.max.x < other.bounds.min.x){
+					if (isOnWaterFloor == false) {
 						return;
 					}
 				}
@@ -201,54 +294,49 @@ public class Bill : ContraEntity {
 
 			onFloor = true;
 			isFallingThrough = false;
-			if (inWater || isJumping) {
-				ScaleUp();
-				isJumping = false;
-				inWater = false;
-			}
-		
-			Vector2 pos = transform.position;
-			pos.y = other.bounds.max.y + transform.localScale.y / 2; 
 
-			transform.position = pos;
+			if (isOnWaterFloor && currentState == BillState.InWater) {
+				stopMoving = true;
+				StartCoroutine(ClimbOnToLand(other));
+			}
+			else {
+				OnLand (other);
+			}
 
 		} else if (other.tag == "Water") {
-			inWater = true;
-			onFloor = false;
-			isFallingThrough = false;
-			isCrouched = false;
 
-			if (!isJumping) {
-				isJumping = false;
-				ScaleDown();
-			}
-
+			SetState (BillState.InWater);
 
 			Vector2 pos = transform.position;
 			pos.y = other.bounds.max.y + transform.localScale.y / 2; 	
 			transform.position = pos;
 
-		} else if (other.tag == "Enemy") {
+		}
+		else if (other.tag == "Enemy") {
 			this.Damage ();
-		} else if (other.tag == "Bridge" && transform.position.y + transform.localScale.y/2 >= other.bounds.max.y) {
-			this.onBridge = true;
-			if (isJumping) {
-				ScaleUp();
-				isJumping = false;
-			}
 		}
 	}
 
+	IEnumerator ClimbOnToLand(Collider2D other) {
+		yield return new WaitForSeconds(0.5f);
+		stopMoving = false;
+		OnLand (other);
+	}
+
+	private void OnLand(Collider2D other) {
+		SetState (BillState.Normal);
+		Vector2 pos = transform.position;
+		pos.y = other.bounds.max.y + transform.localScale.y / 2; 
+		transform.position = pos;
+	}
 
 	void OnTriggerExit2D (Collider2D other){
 		if (other.tag == "Floor") {
-			onFloor = false;
-		}
-		else if (other.tag == "Bridge") {
-			onBridge = false;
+			onFloor = onBridge || false;
+			isOnWaterFloor = false;
 		}
 		else if (other.tag == "Water") {
-			if (inWater) ScaleUp();
+			if (inWater) SetState (BillState.Normal);
 			inWater = false;
 		}
 	}
@@ -256,9 +344,10 @@ public class Bill : ContraEntity {
 	protected virtual void Respawn() {
 		vel = Vector2.zero;
 		onFloor = false;
-
+		currentState = BillState.Null;
+		SetState (BillState.Jumping);
 		if (inWater) {
-			ScaleUp();
+			// ScaleUp();
 			inWater = false;
 		}
 
