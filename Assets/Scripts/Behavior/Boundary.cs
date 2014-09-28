@@ -2,6 +2,9 @@
 using System.Collections;
 
 public class Boundary : MonoBehaviour {
+	/*void OnTriggerEnter2D (Collider2D other) {
+		OnTriggerExit2D (other);
+	}*/
 
 	protected void OnTriggerExit2D (Collider2D other)
 	{
