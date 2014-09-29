@@ -12,7 +12,7 @@ public class BridgeExploding : MonoBehaviour {
 	}
 
 	void Update() {
-		if (shouldExplode ()) {
+		if (bill != null && shouldExplode ()) {
 			StartCoroutine(Explode());
 		}
 	}

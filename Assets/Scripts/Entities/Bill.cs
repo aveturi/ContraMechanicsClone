@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bill : ContraEntity {
 	
-	public float 		leftBoundary = 1.2f;//TODO: change based on level
+	private float 		leftBoundary = 1.2f;//TODO: change based on level
 	public bool 		isFallingThrough;
 	public bool 		isCrouched;
 	public bool 		inWater;
@@ -25,13 +25,17 @@ public class Bill : ContraEntity {
 	public bool 		stopMoving = false;
 	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null};
 	public BillState 	currentState = BillState.Null;
+	private GUIText 		billHealth;
 
 	// Use this for initialization
 	protected virtual void Start () {
-		this.gun = new LGun(this);
+		this.gun = new BasicGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;
-		health = 30;
+		health = 3;
+
+		billHealth = GameObject.Find ("BillHealth").GetComponent<GUIText>();
+
 		if (godMode) health = 1000;
 
 		startingHeight = renderer.bounds.size.y;
@@ -47,6 +51,7 @@ public class Bill : ContraEntity {
 	// Update is called once per frame
 	void Update () {
 		controller.Run ();
+
 		// PositionGun ();
 	}
 
@@ -369,12 +374,12 @@ public class Bill : ContraEntity {
 	}
 
 
-	public override void Damage(float damageTaken = 0) { // -1 means fell off screen
+	public override void Damage(float damageTaken = 0) { // -1 means fell off screen, -2 means lava
 
 		bool isUnderWater = (inWater && isCrouched);
-		bool fellOffInGodMode = (damageTaken == -1) && (godMode || invincibleFlag);
+		bool fellOffInGodMode = (damageTaken == -1 || damageTaken == -2) && (godMode || invincibleFlag);
 
-		if (isUnderWater || (invincibleFlag && !fellOffInGodMode)) {
+		if (isUnderWater || ( (invincibleFlag || godMode) && !fellOffInGodMode)) {
 			return;
 		}
 
@@ -392,6 +397,12 @@ public class Bill : ContraEntity {
 		}
 		else {
 			health--;
+			string healthString = "";
+
+			if (health == 1f) healthString = "O";
+			else if (health == 2f) healthString = "O O";
+
+			billHealth.text = healthString;
 		}
 
 		if (health > 0) {
