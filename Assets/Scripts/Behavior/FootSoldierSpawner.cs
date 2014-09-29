@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class FootSoldierSpawner : MonoBehaviour {
 
-	public int max = 10;
+	public int max = 0;
 	private int spawned = 0;
 	GameObject footSoldier;
 	//public GameObject	marker;
@@ -16,6 +16,9 @@ public class FootSoldierSpawner : MonoBehaviour {
 
 	void Start() {
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
+		if (max == 0) {
+			max = 10;
+		}
 	}
 
 	void FixedUpdate(){
