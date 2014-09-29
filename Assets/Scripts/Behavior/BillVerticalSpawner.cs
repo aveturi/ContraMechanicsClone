@@ -7,6 +7,7 @@ public class BillVerticalSpawner : MonoBehaviour {
 
 	private GameObject 	bill;
 	public float 		lavaSpeed = 0.6f;
+	public bool 		setPosition = false;
 	public float 		startingYDelta = 1.5f;
 	private Lava 		lava;
 
@@ -24,6 +25,10 @@ public class BillVerticalSpawner : MonoBehaviour {
 				b.spawner = this.gameObject;
 				lava.lavaSpeed = lavaSpeed;
 				lava.startingYDelta = startingYDelta;
+
+				if (setPosition) {
+					lava.ResetPosition ();
+				}
 			}
 		}
 	}
