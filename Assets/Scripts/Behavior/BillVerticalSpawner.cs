@@ -5,9 +5,15 @@ using System;
 
 public class BillVerticalSpawner : MonoBehaviour {
 
-	private GameObject bill;
+	private GameObject 	bill;
+	public float 		lavaSpeed = 0.6f;
+	public float 		startingYDelta = 1.5f;
+	private Lava 		lava;
+
 	void Start () {
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
+		GameObject lavaObj = GameObject.FindGameObjectWithTag ("Lava");
+		lava = (Lava) lavaObj.GetComponent(typeof(Lava));
 	}
 	
 	// Update is called once per frame
@@ -16,6 +22,8 @@ public class BillVerticalSpawner : MonoBehaviour {
 			Bill b = bill.GetComponent<Bill>();
 			if (b.spawner.transform.position.y < this.transform.position.y) {
 				b.spawner = this.gameObject;
+				lava.lavaSpeed = lavaSpeed;
+				lava.startingYDelta = startingYDelta;
 			}
 		}
 	}

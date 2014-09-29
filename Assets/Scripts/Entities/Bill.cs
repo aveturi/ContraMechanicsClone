@@ -27,7 +27,7 @@ public class Bill : ContraEntity {
 	public BillState 	currentState = BillState.Null;
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
 		this.gun = new LGun(this);
 		controller = new BillController (this);
 		leftOrRight = 1;

@@ -3,12 +3,13 @@ using System.Collections;
 
 public class Lava : Boundary {
 	
-	private float 	lavaSpeed = 0.6f;
-	private float 	startingYDelta = 1.5f;
+	public float 	lavaSpeed = 0.6f;
+	public float 	startingYDelta = 1.5f;
 	private bool	canMove;
 	public float 	waitTime = 1.5f;
 
 	void Start() {
+		dam = -2;
 		ResetPosition ();
 		canMove = false;
 		Invoke ("CanMove", waitTime);

@@ -6,6 +6,8 @@ public class Boundary : MonoBehaviour {
 		OnTriggerExit2D (other);
 	}*/
 
+	protected int dam = -1;
+
 	protected void OnTriggerExit2D (Collider2D other)
 	{
 		if (other.tag == "Bullet") {
@@ -15,7 +17,7 @@ public class Boundary : MonoBehaviour {
 		else {
 			ContraEntity entity = other.gameObject.GetComponent<ContraEntity>(); 
 			if(entity != null) {
-				entity.Damage(-1);
+				entity.Damage(dam);
 			}
 		}
 	}

@@ -19,5 +19,4 @@ public class Floor : MonoBehaviour {
 			collider2D.enabled = (lavaTop < collider2D.bounds.min.y);
 		}
 	}
-	
 }
