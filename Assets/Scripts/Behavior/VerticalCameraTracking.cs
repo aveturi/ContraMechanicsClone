@@ -25,21 +25,13 @@ public class VerticalCameraTracking : MonoBehaviour {
 
 		boss = GameObject.Find ("Boss");
 		// TODO enable boss when bill hits marker
-		showBoss (false);
 		bossInView = false;
 	}
 
-	void showBoss(bool state) {
-		foreach (Transform child in boss.transform) {
-			if (child.renderer != null) {
-				child.renderer.enabled = state;
-				child.collider2D.enabled = state;
-			}
-			foreach (Transform innerChild in child.transform) {
-				innerChild.renderer.enabled = state;
-				innerChild.collider2D.enabled = state;
-			}
-		}
+	void showBoss() {
+
+		BossScript bossScript = (BossScript) boundaryMarker.GetComponent(typeof(BossScript));
+		bossScript.isActive = true;
 	}
 
 	// Update is called once per frame
@@ -76,8 +68,7 @@ public class VerticalCameraTracking : MonoBehaviour {
 				transform.position = pos;
 			}
 			else {
-				showBoss (true);
-				bossInView = true;
+				showBoss ();
 			}
 		}
 		else {

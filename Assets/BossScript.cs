@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FallingFlameBallController : MonoBehaviour {
+public class BossScript : MonoBehaviour {
 
 	public bool 		isActive = false;
 	private float 		duration = 1f;
 	private float 		deltaTime = 0.0f;
 	private GameObject 	flamePrefab;
 	public float		screenWidth;
-
+	
 	// Use this for initialization
 	void Start () {
 		deltaTime = 0.0f; 
@@ -18,6 +18,13 @@ public class FallingFlameBallController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+//
+//		foreach (Transform child in this.transform) {
+//			GameObject obj = child.gameObject;
+		//			obj.collider2D.enabled = isActive;
+		//			obj.renderer.enabled = isActive;
+//		}
+
 		if (isActive) {
 			deltaTime += Time.deltaTime;
 			if(deltaTime > duration)
