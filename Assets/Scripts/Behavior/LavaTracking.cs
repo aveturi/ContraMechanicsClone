@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LavaTracking : MonoBehaviour {
 
-	public float 		lavaSpeed = 0.7f;
+	public float 		lavaSpeed = 0.4f;
 	public float 		waitTime = 2.0f;
 	private GameObject 	lavaObject;
 	public GameObject	billSpawner;

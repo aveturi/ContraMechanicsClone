@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Lava : Boundary {
 	
-	public float 	lavaSpeed = 0.6f;
+	public float 	lavaSpeed = 0.4f;
 	public float 	startingYDelta = 1.5f;
 	private bool	canMove;
 	public float 	waitTime = 1.5f;

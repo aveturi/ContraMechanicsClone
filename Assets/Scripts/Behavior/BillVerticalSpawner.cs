@@ -19,6 +19,8 @@ public class BillVerticalSpawner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (bill == null)
+						return;
 		if (bill.transform.position.y >= this.transform.position.y) {
 			Bill b = bill.GetComponent<Bill>();
 			if (b.spawner.transform.position.y < this.transform.position.y) {
