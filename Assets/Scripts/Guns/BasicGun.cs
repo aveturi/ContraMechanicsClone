@@ -9,7 +9,7 @@ public class BasicGun : Gun {
 		this.entity = entity;
 		bulletPrefab = Resources.Load ("Bullet") as GameObject;
 		bulletCount = 0;
-		timeBetweenSteps = 0.9f;
+		timeBetweenSteps = 0.8f;
 		numMaxBullets = 4;
 	}
 

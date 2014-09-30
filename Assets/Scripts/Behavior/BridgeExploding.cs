@@ -18,7 +18,7 @@ public class BridgeExploding : MonoBehaviour {
 	}
 
 	bool shouldExplode() {
-		float min_x = transform.position.x - 0.3f;
+		float min_x = transform.position.x-3f ;
 		return min_x < bill.renderer.bounds.max.x;
 	}
 

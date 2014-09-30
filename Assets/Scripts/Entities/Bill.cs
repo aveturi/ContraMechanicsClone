@@ -9,7 +9,7 @@ public class Bill : ContraEntity {
 	public bool 		inWater;
 	public bool 		onFloor;
 	public bool 		onBridge;
-	public float 		xSpeed = 0.05f;
+	private float 		xSpeed = 0.06f;
 	public float 		jumpVal = 10.5f;
 	public Vector2		vel = Vector2.zero;
 	public GameObject 	spawner;
