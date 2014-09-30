@@ -60,7 +60,9 @@ public class SniperController : Controller {
 		entity.dir = shootDirection.normalized;
 
 		if (canShoot (angle)) {
-			entity.Shoot();
+			entity.Shoot ();
+		} else {
+			entity.dir = Vector2.zero;
 		}
 	}
 }

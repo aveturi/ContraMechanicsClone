@@ -241,6 +241,7 @@ public class Bill : ContraEntity {
 	
 
 	public override void FallThrough() {
+		this.dir = (this.leftOrRight == 1) ? Vector2.right : -Vector2.right;
 		isFallingThrough = true;
 		onFloor = false;
 		Uncrouch();

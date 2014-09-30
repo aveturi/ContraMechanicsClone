@@ -82,5 +82,8 @@ public class BillController : Controller {
 
 	
 		entity.dir = dir;
+		if (bill.isFallingThrough) {
+			entity.dir = (entity.leftOrRight == 1) ? Vector2.right : -Vector2.right;
+		}
 	}
 }
