@@ -18,11 +18,18 @@ public class BillController : Controller {
 
 		float horizontalAxis = Input.GetAxisRaw ("Horizontal");
 		float verticalAxis = Input.GetAxisRaw ("Vertical");
-		Vector2	dir = new Vector2(entity.leftOrRight, 0);
+		Vector2 dir = new Vector2 (entity.leftOrRight, 0);
+		
 		if (horizontalAxis > 0) {
 			entity.MoveRight();
 			
 		} else if (horizontalAxis < 0) {
+			entity.MoveLeft();
+		}
+
+		if (horizontalAxis == 0 && entity.leftOrRight == 1 && bill.currentState == Bill.BillState.JumpingRight) {
+			entity.MoveRight();
+		} else if(horizontalAxis == 0 && entity.leftOrRight == -1 && bill.currentState == Bill.BillState.JumpingLeft){
 			entity.MoveLeft();
 		}
 
@@ -57,7 +64,8 @@ public class BillController : Controller {
 		}
 
 		if (Input.GetKeyDown (jumpKey) ){
-			entity.Jump();
+			//entity.Jump();
+			bill.Jump (horizontalAxis);
 		}
 
 

@@ -22,6 +22,11 @@ public class GunVisuals : MonoBehaviour {
 	private Vector2 D;
 
 	private ContraEntity entity;
+
+	void Awake(){
+		RenderersOff ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		RenderersOff ();
@@ -43,9 +48,10 @@ public class GunVisuals : MonoBehaviour {
 	}
 
 	public void UpdateVisual(){
+		if (entity.dir == Vector2.zero)
+						return;
 		RenderersOff ();
-		// find out which of the 8 directions entity.dir is closest to and assign it that one.
-		
+
 		float angle = Vector2.Angle (Vector2.up, entity.dir.normalized);
 		angle = (Mathf.Round(angle/ 45f ) * 45f);
 		if (entity.leftOrRight == -1) {
