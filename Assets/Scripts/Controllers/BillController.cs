@@ -55,7 +55,7 @@ public class BillController : Controller {
 			}
 		}
 
-		if (Input.GetKeyDown (jumpKey)) {
+		if (Input.GetKeyDown (jumpKey) ){
 			entity.Jump();
 		}
 
