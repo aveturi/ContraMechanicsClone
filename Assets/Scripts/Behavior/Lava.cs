@@ -4,11 +4,14 @@ using System.Collections;
 public class Lava : Boundary {
 	
 	public float 	lavaSpeed = 0.4f;
-	public float 	startingYDelta = 1.5f;
+	public float 	startingYDelta = -5f;
 	private bool	canMove;
 	public float 	waitTime = 1.5f;
+	Bill bill;
 
 	void Start() {
+		GameObject b = GameObject.FindGameObjectWithTag ("BillRizer");
+		bill = b.GetComponent<Bill>();
 		dam = -2;
 		ResetPosition ();
 		canMove = false;
@@ -16,6 +19,7 @@ public class Lava : Boundary {
 	}
 
 	void Update() {
+
 		if (canMove) {
 			var pos = transform.position;
 			pos.y += lavaSpeed * Time.deltaTime;
@@ -28,7 +32,6 @@ public class Lava : Boundary {
 	}
 
 	public void ResetPosition () {
-
 		canMove = false;
 
 		Vector2 t_a = new Vector2 (0f, 0f); // will be the Bottom-Left

@@ -36,7 +36,6 @@ public class CamoSniper : ContraEntity {
 	// Update is called once per frame
 	protected virtual void Update () {
 		controller.Run ();
-		Debug.Log ("isCrouched " + isCrouched);
 	}
 
 
