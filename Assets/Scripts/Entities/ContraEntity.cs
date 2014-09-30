@@ -11,7 +11,8 @@ public abstract class ContraEntity : MonoBehaviour {
 	public int					upOrDown; // [1 = up, -1 = down]
 	public GameObject   		bulletPrefab;
 	public float 				bulletDeltaSpace = 0.3f;
-	
+
+
 	public virtual void MoveLeft() {}
 	public virtual void MoveRight() {}
 	public virtual void Jump() {}

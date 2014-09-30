@@ -37,6 +37,10 @@ public class BillController : Controller {
 			else {
 				entity.Crouch();
 			}
+
+			if(bill.inWater){
+				entity.Crouch();
+			}
 		} 
 		else {
 			entity.Uncrouch();
@@ -74,6 +78,8 @@ public class BillController : Controller {
 		if (bill.isCrouched) {
 			dir.y = 0;		
 		}
+
+
 		Debug.Log ("Dir for Bill is " + entity.dir);
 		entity.dir = dir;
 	}

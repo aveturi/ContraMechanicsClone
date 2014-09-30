@@ -51,16 +51,8 @@ public class Bill : ContraEntity {
 	// Update is called once per frame
 	void Update () {
 		controller.Run ();
-
-		// PositionGun ();
 	}
 
-//	public void PositionGun() {
-//		dir.Normalize ();
-//		GameObject gun = GameObject.FindGameObjectWithTag ("Gun");
-//		var a = Quaternion.LookRotation(dir, Vector3.up);
-//		gun.transform.rotation = a;
-//	}
 
 	// Update is called once per frame
 	void FixedUpdate () {	

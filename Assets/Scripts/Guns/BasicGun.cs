@@ -50,7 +50,7 @@ public class BasicGun : Gun {
 		Bullet b = bullet.GetComponent<Bullet>();
 		b.owner = entity;
 
-		b.speed = 9f;
+		b.speed = 14f;
 		b.ownerTag = entity.tag;
 //		Debug.Log ("The owner is " + b.owner);
 		b.SetVelocity(entity.dir);

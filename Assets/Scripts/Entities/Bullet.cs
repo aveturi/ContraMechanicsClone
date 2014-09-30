@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Bullet : MonoBehaviour {
 
 	protected 		Vector2 velocity = Vector2.zero;
-	public 			float speed = 4f;
+	public 			float speed = 6f;
 	protected 		List<string> safeTags;
 	protected 		float damageVal = 1f;
 	public			string ownerTag = "";

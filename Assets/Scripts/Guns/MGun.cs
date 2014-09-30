@@ -6,7 +6,7 @@ public class MGun : Gun {
 	// Gun definitions taken from http://strategywiki.org/wiki/Contra_(NES)/Weapons
 
 	private float bulletDamage = 1.5f;
-	private float bulletSpeed = 8f;
+	private float bulletSpeed = 14f;
 
 	public MGun (ContraEntity entity) {
 		this.entity = entity;
