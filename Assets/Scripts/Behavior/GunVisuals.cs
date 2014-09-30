@@ -12,11 +12,29 @@ public class GunVisuals : MonoBehaviour {
 	public GameObject up;
 	public GameObject down;
 
+	private Vector2 TL;
+	private Vector2 TR;
+	private Vector2 BL;
+	private Vector2 BR;
+	private Vector2 L;
+	private Vector2 R;
+	private Vector2 U;
+	private Vector2 D;
+
 	private ContraEntity entity;
 	// Use this for initialization
 	void Start () {
 		RenderersOff ();
 		this.entity = this.transform.parent.gameObject.GetComponent<ContraEntity> ();
+			
+			L = new Vector2(-1,0).normalized;
+			R = new Vector2(1,0).normalized;
+			TL = new Vector2(-1,1).normalized;
+			TR = new Vector2(1,1).normalized;
+			BL = new Vector2(-1,-1).normalized;
+			BR = new Vector2(1,-1).normalized;
+			U = new Vector2(0,1).normalized;
+			D = new Vector2(0,-1).normalized;
 	}
 
 	void Update(){
@@ -25,25 +43,36 @@ public class GunVisuals : MonoBehaviour {
 	}
 
 	public void UpdateVisual(){
-		Vector2 dir = entity.dir;
 		RenderersOff ();
+		// find out which of the 8 directions entity.dir is closest to and assign it that one.
+		
+		float angle = Vector2.Angle (Vector2.up, entity.dir.normalized);
+		angle = (Mathf.Round(angle/ 45f ) * 45f);
+		if (entity.leftOrRight == -1) {
+			angle = 360 - angle;	
+		}
 
-		Debug.Log ("UpdateGunVis " + entity.tag + " " + entity.dir);
-		if (dir.x == -1 && dir.y == 0) { //L
+		var shootDirection = new Vector2(Mathf.Sin(Mathf.Deg2Rad * angle), Mathf.Cos(Mathf.Deg2Rad * angle));
+		shootDirection.Normalize ();
+		float mag = shootDirection.magnitude;
+
+
+		Vector2 dir = shootDirection;
+		if (dir == L) { //L
 				left.renderer.enabled = true;
-		} else if (dir.x == 1 && dir.y == 0) { //R
+		} else if (dir == R) { //R
 				right.renderer.enabled = true;
-		} else if (dir.x == -1 && dir.y == 1) { //TL
+		} else if (dir == TL) { //TL
 				topLeft.renderer.enabled = true;
-		} else if (dir.x == 1 && dir.y == 1) { // TR
+		} else if (dir == TR) { // TR
 				topRight.renderer.enabled = true;
-		} else if (dir.x == -1 && dir.y == -1) { // BL
+		} else if (dir == BL) { // BL
 				bottomLeft.renderer.enabled = true;
-		} else if (dir.x == 1 && dir.y == -1) { //BR
+		} else if (dir == BR) { //BR
 				bottomRight.renderer.enabled = true;
-		} else if (dir.x == 0 && dir.y == 1) {//UP
+		} else if (dir == U) {//UP
 				up.renderer.enabled = true;
-		} else if (dir.x == 0 && dir.y == -1) {//DOWN
+		} else if (dir == D) {//DOWN
 				down.renderer.enabled = true;
 		}
 	}

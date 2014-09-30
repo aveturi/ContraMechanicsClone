@@ -5,13 +5,14 @@ public class CamoSniperController : Controller {
 
 	private GameObject 		bill = null;
 
+
+
 	public CamoSniperController (ContraEntity entity) : base(entity) 
 	{
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 	}
 
 	public override void Run () {
-
 		entity.Uncrouch ();
 
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
@@ -36,7 +37,6 @@ public class CamoSniperController : Controller {
 		entity.Shoot ();
 
 		entity.Crouch ();
-
 	}
 
 }
