@@ -25,7 +25,7 @@ public class Bill : ContraEntity {
 	public float 		startingWidth;
 	public bool 		stopMoving = false;
 	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null};
-	public BillState 	currentState = BillState.Null;
+	public BillState 		currentState = BillState.Null;
 	private GUIText 		billHealth;
 
 	// Use this for initialization

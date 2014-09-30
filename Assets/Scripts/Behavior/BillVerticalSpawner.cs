@@ -8,9 +8,9 @@ public class BillVerticalSpawner : MonoBehaviour {
 	private GameObject 	bill;
 	public float 		lavaSpeed = 0.6f;
 	public bool 		setPosition = false;
+	public bool 		isBossSpawner = false;
 	public float 		startingYDelta = 1.5f;
 	private Lava 		lava;
-
 	void Start () {
 		bill = GameObject.FindGameObjectWithTag ("BillRizer");
 		GameObject lavaObj = GameObject.FindGameObjectWithTag ("Lava");
@@ -21,7 +21,9 @@ public class BillVerticalSpawner : MonoBehaviour {
 	void Update () {
 		if (bill == null)
 						return;
-		if (bill.transform.position.y >= this.transform.position.y) {
+		if (bill.transform.position.y >= this.transform.position.y || (
+			isBossSpawner && bill.transform.position.y + 1f >= this.transform.position.y
+			&& bill.transform.position.x + 1f >= this.transform.position.x)) {
 			Bill b = bill.GetComponent<Bill>();
 			if (b.spawner.transform.position.y < this.transform.position.y) {
 				b.spawner = this.gameObject;
