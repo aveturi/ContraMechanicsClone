@@ -242,6 +242,10 @@ public class Bill : ContraEntity {
 		if (isOnWaterFloor) {
 			return false;	
 		}
+
+		if (!onFloor) {
+			return false;
+		}
 		Vector2 pointA = (Vector2) renderer.bounds.min;
 
 		Vector2 pointB = (Vector2) renderer.bounds.max;
@@ -278,6 +282,13 @@ public class Bill : ContraEntity {
 	void OnTriggerEnter2D (Collider2D other)
 	{
 		if (other.tag == "Floor" || other.tag == "Bridge") {
+
+			//FIX FOR BILL LAND TIME COINCIDING WITH KEY PRESS TIME
+			if(this.vel.y < 0){
+				this.vel.y = 0;
+			}
+			//----------
+
 			isOnWaterFloor = false;
 
 			GameObject floor = other.gameObject;

@@ -8,6 +8,7 @@ public class BillController : Controller {
 	private KeyCode		invincibleKey = KeyCode.G;
 	private Bill		bill = null;
 
+
 	public BillController (ContraEntity entity) : base(entity) 
 	{
 		bill = entity as Bill;
@@ -79,8 +80,7 @@ public class BillController : Controller {
 			dir.y = 0;		
 		}
 
-
-		Debug.Log ("Dir for Bill is " + entity.dir);
+	
 		entity.dir = dir;
 	}
 }
