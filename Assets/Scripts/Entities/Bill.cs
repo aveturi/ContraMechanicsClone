@@ -24,7 +24,7 @@ public class Bill : ContraEntity {
 	public float 		startingHeight;
 	public float 		startingWidth;
 	public bool 		stopMoving = false;
-	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null};
+	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null, JumpingRight, JumpingLeft};
 	public BillState 		currentState = BillState.Null;
 	private GUIText 		billHealth;
 
@@ -32,7 +32,7 @@ public class Bill : ContraEntity {
 	protected virtual void Start () {
 		this.gun = new BasicGun(this);
 		controller = new BillController (this);
-		leftOrRight = 1;
+		leftOrRight = 0;
 		health = 3;
 
 		billHealth = GameObject.Find ("BillHealth").GetComponent<GUIText>();
@@ -101,7 +101,8 @@ public class Bill : ContraEntity {
 		}
 	}
 
-	public override void Jump() {
+	public  void Jump(float horizontalAxisInputValue) {
+
 		if (!inWater && (onFloor)) {
 			if (isCrouched) {
 				if (canFallThrough()) {
@@ -109,14 +110,20 @@ public class Bill : ContraEntity {
 				}
 			}
 			else {
-				PerformJump();
+				PerformJump(horizontalAxisInputValue);
 			}
 		}
 	}
 
-	private void PerformJump() {
+	private void PerformJump(float horizontalAxisInputValue) {
 		// ScaleDown ();
-		SetState (BillState.Jumping);
+		if (horizontalAxisInputValue == 0) {
+			SetState (BillState.Jumping);
+		} else if (horizontalAxisInputValue > 0) {
+			SetState (BillState.JumpingRight);
+		} else if (horizontalAxisInputValue < 0) {
+			SetState (BillState.JumpingLeft);
+		}
 		Vector2 jumpForce = new Vector2(0f, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
@@ -175,6 +182,8 @@ public class Bill : ContraEntity {
 			}
 			break;
 		case BillState.Jumping:
+		case BillState.JumpingLeft:
+		case BillState.JumpingRight:
 			onFloor = false;
 			isJumping = true;
 			isCrouched = false;
@@ -241,7 +250,6 @@ public class Bill : ContraEntity {
 	
 
 	public override void FallThrough() {
-		this.dir = (this.leftOrRight == 1) ? Vector2.right : -Vector2.right;
 		isFallingThrough = true;
 		onFloor = false;
 		Uncrouch();
