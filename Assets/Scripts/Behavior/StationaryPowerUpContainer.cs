@@ -12,6 +12,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 
 	public float 	timeBetweenSteps = 2f;
 	public float 	lastStep = 0;
+	public int 			leftOrRight = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +29,7 @@ public class StationaryPowerUpContainer : MonoBehaviour {
 				powerup.transform.position = this.transform.position;
 				PowerUp p = powerup.transform.FindChild("PowerUp").gameObject.GetComponent<PowerUp>();
 				p.gunType = this.gunType;
-
+				p.leftOrRight = leftOrRight;
 				Instantiate(powerup);
 				Destroy(this.gameObject);
 			}

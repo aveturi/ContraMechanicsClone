@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Bill : ContraEntity {
 	
-	private float 		leftBoundary = 1.2f;//TODO: change based on level
+	private float 		leftBoundary = 1.2f;
+	private float 		rightBoundary = 0f;
 	public bool 		isFallingThrough;
 	public bool 		isCrouched;
 	public bool 		inWater;
@@ -42,7 +43,8 @@ public class Bill : ContraEntity {
 		startingWidth = renderer.bounds.size.x;
 
 		if (Application.loadedLevelName == "Level_2") {
-			leftBoundary = 0.6f;
+			leftBoundary = 0.8f;
+			rightBoundary = 0.8f;
 		}
 
 		Respawn ();
@@ -89,7 +91,13 @@ public class Bill : ContraEntity {
 			leftOrRight = 1;
 			Vector2 pos = transform.position;
 			pos.x += xSpeed;
-			transform.position = pos;
+
+			var vertExtent = Camera.main.camera.orthographicSize;
+			var horzExtent = vertExtent * Screen.width / Screen.height;
+			
+			if (pos.x <= (Camera.main.transform.position.x + horzExtent - rightBoundary)) {
+				transform.position = pos;
+			}
 		}
 	}
 

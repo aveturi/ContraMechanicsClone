@@ -47,7 +47,8 @@ public class MovingFloorSegment : MonoBehaviour {
 	}
 	
 	void OnTriggerStay2D(Collider2D other){
-		if (other.tag == "BillRizer" && other.renderer.bounds.min.y >= this.renderer.bounds.max.y && !billOnPlatform) {
+		// && other.renderer.bounds.min.y >= this.renderer.bounds.max.y
+		if (other.tag == "BillRizer" && !billOnPlatform) {
 			billOnPlatform = true;
 		}
 	}

@@ -9,7 +9,7 @@ public class PowerUp : MonoBehaviour{
 	public string gunType = null;
 	private float		jumpVal = 10f;
 	private float		xSpeed = 2f;
-
+	public int 			leftOrRight = 1;
 	// Use this for initialization
 	void Start () {
 		onFloor = false;
@@ -62,7 +62,7 @@ public class PowerUp : MonoBehaviour{
 
 	private void PerformJump() {
 		onFloor = false;
-		Vector2 jumpForce = new Vector2(xSpeed, jumpVal);
+		Vector2 jumpForce = new Vector2(leftOrRight * xSpeed, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
 	}

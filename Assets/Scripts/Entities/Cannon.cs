@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Cannon : Sniper {
 
-	public float		cannonRange = 8f;
+	private float		cannonRange = 8f;
+	private float 		cannonYRange = 999f;
 
 	protected override void Start () {
 		base.Start ();
@@ -13,6 +14,11 @@ public class Cannon : Sniper {
 		timeBetweenSteps = 0f;
 		t_timeBetweenSteps = 3f;
 		renderer.enabled = false;
+
+		if (Application.loadedLevelName == "Level_2") {
+			cannonYRange = 1f;
+		}
+
 	}
 
 	protected virtual void Update() {
@@ -23,6 +29,7 @@ public class Cannon : Sniper {
 
 		if (bill != null) {
 			inRange = (bill.transform.position.x + cannonRange >= transform.position.x);
+			inRange = inRange && (bill.transform.position.y + cannonYRange >= transform.position.y);
 		}
 
 		if (inRange) {
