@@ -10,13 +10,15 @@ public class CamoSniper : ContraEntity {
 
 	private float	lastStep;
 	private int		bulletCount = 0;
-	private float 	timeBetweenSteps = 5f;
-	private	int		numMaxBullets = 1;
+	private float 	timeBetweenSteps = 2f;
+	private	int		numMaxBullets = 2;
 
 	private bool    activated = false;
 	private float	screenWidth;
 
 	private GameObject	bill;
+
+	private bool canCrouch;
 
 	// Use this for initialization
 	protected virtual void Start () {	
@@ -27,21 +29,28 @@ public class CamoSniper : ContraEntity {
 		var mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		xRange = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect)/2;
 		screenWidth = (mainCamera.camera.orthographicSize * 2f * mainCamera.camera.aspect);
+
+		InvokeRepeating ("updateCrouchState", 1, 3);
 	}
 	
 	// Update is called once per frame
 	protected virtual void Update () {
 		controller.Run ();
+		Debug.Log ("isCrouched " + isCrouched);
 	}
 
 
 	public override void Shoot() {
+
 		if (CanShoot ()) {
 			PerformShoot();
 		}
 	}
 
 	protected bool CanShoot(){
+
+		if (isCrouched)
+						return false;
 
 		var xDist = Mathf.Abs(bill.transform.position.x - this.transform.position.x);
 		var yDist = Mathf.Abs(bill.transform.position.y - this.transform.position.y);
@@ -60,7 +69,6 @@ public class CamoSniper : ContraEntity {
 				if (lastStep == 0) {
 						lastStep = Time.time;
 				} else if (Time.time - lastStep > timeBetweenSteps) {
-					Debug.Log("LastStep "+ (Time.time - lastStep ));
 						lastStep = Time.time;
 						bulletCount = 0;
 						return true;
@@ -74,7 +82,6 @@ public class CamoSniper : ContraEntity {
 	}
 
 	private void PerformShoot() {
-		//Debug.Log ("CamoSniper Shoot!");
 		GameObject bullet = Instantiate( bulletPrefab ) as GameObject;
 		
 		Vector3 pos = transform.position;
@@ -117,24 +124,32 @@ public class CamoSniper : ContraEntity {
 		//Debug.Log("Dead!!");
 
 		//TODO: Do death animation
-
-		Destroy (this.gameObject);
+		if(!isCrouched)
+			Destroy (this.gameObject);
 	}
 	
 
 	public override void Crouch() {
+
+		if (!canCrouch)
+						return;
 		if (!isCrouched) {
 			ScaleDown ();		
 		}
 		isCrouched = true;
-		//TODO: wait here for a short time lag
 	}
 
 
 	public override void Uncrouch() {
+		if (canCrouch)
+						return;
 		if (isCrouched) {
 			ScaleUp ();	
 		}
 		isCrouched = false;
+	}
+
+	public void updateCrouchState(){
+		canCrouch = !canCrouch;
 	}
 }
