@@ -17,6 +17,8 @@ public class BossPanel : ContraEntity {
 		Debug.Log ("Took Damage!");
 		this.health--;
 		if (health <= 0) {
+			var nextLvlStairway = GameObject.FindGameObjectWithTag("NextLevel");
+			nextLvlStairway.transform.GetChild(0).renderer.enabled = true;
 			Destroy(this.gameObject);
 		}
 	}
