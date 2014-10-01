@@ -31,7 +31,7 @@ public class VerticalCameraTracking : MonoBehaviour {
 	void showBoss() {
 
 		BossScript bossScript = (BossScript) boundaryMarker.GetComponent(typeof(BossScript));
-		bossScript.isActive = true;
+		if (!bossScript.isDead) bossScript.isActive = true;
 	}
 
 	// Update is called once per frame

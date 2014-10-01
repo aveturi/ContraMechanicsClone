@@ -61,6 +61,9 @@ public class FlameBall : ContraEntity {
 		if (this.health == 0) {
 			GameObject parent = transform.parent.gameObject;
 			if(isBoss){
+				BossScript bossScript = (BossScript) parent.transform.parent.GetComponent(typeof(BossScript));
+				bossScript.isDead = true;
+				bossScript.isActive = false;
 				var stairway = GameObject.FindGameObjectWithTag("NextLevel");
 				stairway.transform.GetChild(0).transform.GetChild(0).renderer.enabled = true;
 				stairway.transform.GetChild(1).transform.GetChild(0).renderer.enabled = true;
