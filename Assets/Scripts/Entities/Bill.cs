@@ -376,15 +376,21 @@ public class Bill : ContraEntity {
 		transform.position = spawner.transform.position;
 
 		leftOrRight = 1;
-		invincibleFlag = true;
-		Invoke("SetVincible", invincibleSeconds);
+		StartCoroutine(Blink(invincibleSeconds));
 		gun = new BasicGun (this);
 	}
 
-	private void SetVincible() {
+	IEnumerator Blink(float blinkTime) {
+		invincibleFlag = true;
+		var endTime = Time.time + blinkTime;
+		while(Time.time < endTime){
+			renderer.enabled = false;
+			yield return new WaitForSeconds(0.2f);
+			renderer.enabled = true;
+			yield return new WaitForSeconds(0.2f);
+		}
 		invincibleFlag = false;
 	}
-
 
 	public override void Damage(float damageTaken = 0) { // -1 means fell off screen, -2 means lava
 
