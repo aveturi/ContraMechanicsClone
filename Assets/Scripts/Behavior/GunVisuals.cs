@@ -43,6 +43,10 @@ public class GunVisuals : MonoBehaviour {
 	}
 
 	void Update(){
+		if (this.transform.parent.gameObject.renderer.enabled == false) {
+			RenderersOff();		
+			return;
+		}
 		this.transform.position = entity.transform.position;
 		UpdateVisual ();
 	}

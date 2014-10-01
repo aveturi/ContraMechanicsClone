@@ -21,9 +21,8 @@ public class BillVerticalSpawner : MonoBehaviour {
 	void Update () {
 		if (bill == null)
 						return;
-		if (bill.transform.position.y >= this.transform.position.y || (
-			isBossSpawner && bill.transform.position.y + 1f >= this.transform.position.y
-			&& bill.transform.position.x + 1f >= this.transform.position.x)) {
+		if (!isBossSpawner && bill.transform.position.y >= this.transform.position.y || (
+			isBossSpawner && bill.transform.position.y + 1f >= this.transform.position.y)) {
 			Bill b = bill.GetComponent<Bill>();
 			if (b.spawner.transform.position.y < this.transform.position.y) {
 				b.spawner = this.gameObject;

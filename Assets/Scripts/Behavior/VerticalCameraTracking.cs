@@ -72,7 +72,7 @@ public class VerticalCameraTracking : MonoBehaviour {
 			}
 		}
 		else {
-			if (player.transform.position.y + 1f >= marker.transform.position.y && player.transform.position.x + 0.6f >= marker.transform.position.x) {
+			if (player.transform.position.y + 1f >= marker.transform.position.y) {
 				finalScene = true;
 			}
 			
