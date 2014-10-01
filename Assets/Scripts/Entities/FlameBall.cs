@@ -6,12 +6,12 @@ public class FlameBall : ContraEntity {
 	private float timeBetweenSteps = 1.5f;
 	private float lastStep = 0;
 	private bool flameOn = false;
+	public bool isBoss = false;
+
 	void Start () {
 		if(this.health == 0)
 		this.health = 10;
 	}
-	
-
 
 	void Update () {
 	
@@ -60,6 +60,12 @@ public class FlameBall : ContraEntity {
 		this.health--;
 		if (this.health == 0) {
 			GameObject parent = transform.parent.gameObject;
+			if(isBoss){
+				var stairway = GameObject.FindGameObjectWithTag("NextLevel");
+				stairway.transform.GetChild(0).transform.GetChild(0).renderer.enabled = true;
+				stairway.transform.GetChild(1).transform.GetChild(0).renderer.enabled = true;
+				stairway.transform.GetChild(2).transform.GetChild(0).renderer.enabled = true;
+			}
 			Destroy(parent);
 		}
 	}

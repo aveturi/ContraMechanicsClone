@@ -27,11 +27,6 @@ public class BillController : Controller {
 			entity.MoveLeft();
 		}
 
-		if (horizontalAxis == 0 && entity.leftOrRight == 1 && bill.currentState == Bill.BillState.JumpingRight) {
-			entity.MoveRight();
-		} else if(horizontalAxis == 0 && entity.leftOrRight == -1 && bill.currentState == Bill.BillState.JumpingLeft){
-			entity.MoveLeft();
-		}
 
 		dir.Set (entity.leftOrRight, 0);
 

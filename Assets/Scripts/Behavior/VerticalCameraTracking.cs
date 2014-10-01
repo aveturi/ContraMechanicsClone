@@ -70,6 +70,13 @@ public class VerticalCameraTracking : MonoBehaviour {
 			else {
 				showBoss ();
 			}
+
+			var topRight = this.camera.ViewportToWorldPoint (new Vector2(1, 1));
+			if (player.transform.position.y >= topRight.y) {
+				Application.LoadLevel("Final");
+			}
+
+
 		}
 		else {
 			if (player.transform.position.y + 1f >= marker.transform.position.y) {

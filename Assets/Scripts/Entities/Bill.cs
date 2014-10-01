@@ -24,7 +24,7 @@ public class Bill : ContraEntity {
 	public float 		startingHeight;
 	public float 		startingWidth;
 	public bool 		stopMoving = false;
-	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null, JumpingRight, JumpingLeft};
+	public enum BillState {Normal, CrouchedOnLand, CrouchedInWater, InWater, Jumping, Null};
 	public BillState 		currentState = BillState.Null;
 	private GUIText 		billHealth;
 
@@ -117,13 +117,7 @@ public class Bill : ContraEntity {
 
 	private void PerformJump(float horizontalAxisInputValue) {
 		// ScaleDown ();
-		if (horizontalAxisInputValue == 0) {
 			SetState (BillState.Jumping);
-		} else if (horizontalAxisInputValue > 0) {
-			SetState (BillState.JumpingRight);
-		} else if (horizontalAxisInputValue < 0) {
-			SetState (BillState.JumpingLeft);
-		}
 		Vector2 jumpForce = new Vector2(0f, jumpVal);
 		vel += (Vector2)jumpForce;
 		transform.position =  (Vector2)transform.position +vel*Time.deltaTime;
@@ -182,8 +176,6 @@ public class Bill : ContraEntity {
 			}
 			break;
 		case BillState.Jumping:
-		case BillState.JumpingLeft:
-		case BillState.JumpingRight:
 			onFloor = false;
 			isJumping = true;
 			isCrouched = false;
